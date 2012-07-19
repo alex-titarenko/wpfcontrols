@@ -1,0 +1,127 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:talex="clr-namespace:TAlex.WPF.Controls">
+
+    <LinearGradientBrush x:Key="NormalBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#EEE" Offset="0.0"/>
+        <GradientStop Color="#CCC" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="NormalBorderBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#CCC" Offset="0.0"/>
+        <GradientStop Color="#444" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HoverBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFF" Offset="0.0"/>
+        <GradientStop Color="#AAA" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PressedBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#BBB" Offset="0.0"/>
+        <GradientStop Color="#EEE" Offset="0.1"/>
+        <GradientStop Color="#EEE" Offset="0.9"/>
+        <GradientStop Color="#FFF" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PressedBorderBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#444" Offset="0.0"/>
+        <GradientStop Color="#888" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- NumericUpDown -->
+    <Style TargetType="{x:Type talex:NumericUpDown}">
+        <Style.Resources>
+            <Style TargetType="{x:Type RepeatButton}" x:Key="IncreaseButton" BasedOn="{x:Null}">
+                <Setter Property="MinWidth" Value="15" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RepeatButton}">
+                            <Grid>
+                                <Border Name="Border" BorderThickness="1" BorderBrush="{StaticResource NormalBorderBrush}" CornerRadius="0 1 0 0" Margin="0" Padding="0" Background="{StaticResource NormalBrush}"></Border>
+                                <ContentPresenter HorizontalAlignment="Center" x:Name="ContentPresenter" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource HoverBrush}"/>
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource PressedBrush}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PressedBorderBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type RepeatButton}" x:Key="DecreaseButton" BasedOn="{x:Null}">
+                <Setter Property="MinWidth" Value="15" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RepeatButton}">
+                            <Grid>
+                                <Border Name="Border" BorderThickness="1" BorderBrush="{StaticResource NormalBorderBrush}" CornerRadius="0 0 1 0" Margin="0" Padding="0" Background="{StaticResource NormalBrush}"></Border>
+                                <ContentPresenter HorizontalAlignment="Center" x:Name="ContentPresenter" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource HoverBrush}"/>
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource PressedBrush}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PressedBorderBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        
+        <Setter Property="Background" Value="#ffffffff" />
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#ff848484"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type talex:NumericUpDown}">
+                    <Grid SnapsToDevicePixels="True" Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBox Name="textbox" BorderThickness="0" Margin="0" Grid.Column="0" Grid.RowSpan="2" Background="Transparent" VerticalContentAlignment="Center" />
+
+                        <RepeatButton Margin="0" Padding="0" Command="{x:Static talex:NumericUpDown.IncreaseCommand}"
+                            Grid.Column="1" Grid.Row="0" Focusable="False" Style="{StaticResource IncreaseButton}">
+                            <Path Fill="{TemplateBinding Foreground}" Width="5" Height="3" Stretch="Fill" Stroke="{x:Null}" Data="M0,1L1,0 2,1z"/>
+                        </RepeatButton>
+
+                        <RepeatButton Margin="0" Padding="0" Command="{x:Static talex:NumericUpDown.DecreaseCommand}"
+                            Grid.Column="1" Grid.Row="1" Focusable="False" Style="{StaticResource DecreaseButton}">
+                            <Path Fill="{TemplateBinding Foreground}" Width="5" Height="3" Stretch="Fill" Stroke="{x:Null}" Data="M0,0L2,0 1,1z"/>
+                        </RepeatButton>
+
+                        <Border CornerRadius="1" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,157 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:talex="clr-namespace:TAlex.WPF.Controls">
+    
+    <!-- ColorChip -->
+    <Style TargetType="{x:Type talex:ColorChip}">
+        <Style.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+            
+            <DrawingBrush x:Key="ChessBoardBrush" Viewport="0,0,10,10" ViewportUnits="Absolute" TileMode="Tile">
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="White">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="0,0,10,10" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+
+                        <GeometryDrawing Brush="LightGray">
+                            <GeometryDrawing.Geometry>
+                                <GeometryGroup>
+                                    <RectangleGeometry Rect="0,0,5,5" />
+                                    <RectangleGeometry Rect="5,5,5,5" />
+                                </GeometryGroup>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+
+            <DataTemplate x:Key="ColorItemTemplate">
+                <Border Margin="1" Width="14" Height="14" SnapsToDevicePixels="True" BorderBrush="Silver" BorderThickness="1" Background="White" ToolTip="{Binding Path=AdvancedToolTip}">
+                    <Grid Margin="1">
+                        <Rectangle Fill="{StaticResource ChessBoardBrush}" />
+                        <Rectangle Fill="{Binding Path=Brush}" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <Style x:Key="ColorListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Grid ToolTip="{Binding Path=AdvancedToolTip}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <Border Margin="1" BorderThickness="1" Background="Transparent" BorderBrush="Transparent" x:Name="outerBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Border Background="Transparent" BorderThickness="1" BorderBrush="Transparent" x:Name="innerBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="outerBorder" Property="BorderBrush" Value="#FFFF0000" />
+                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="#FFFFFF00" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="outerBorder" Property="BorderBrush" Value="#FFFF0000" />
+                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="#FFFFFF00" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        
+        <Setter Property="BorderBrush" Value="Silver" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="PreviewAreaWidth" Value="18" />
+        <Setter Property="PreviewAreaHeight" Value="18" />
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type talex:ColorChip}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="selectedColorBorder" SnapsToDevicePixels="True" Width="{TemplateBinding PreviewAreaWidth}" Height="{TemplateBinding PreviewAreaHeight}"
+                                Background="White" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="1,1,2,1">
+                            <Grid>
+                                <Rectangle Fill="{StaticResource ChessBoardBrush}" Margin="1" />
+                                <Rectangle Name="selectedColorPreviewRectangle" Margin="1" />
+                            </Grid>
+                        </Border>
+
+                        <Popup Name="colorsListPopup" PlacementTarget="{Binding ElementName=selectedColorBorder}"
+                            StaysOpen="False" AllowsTransparency="True" Focusable="False" VerticalOffset="1">
+                            <Border BorderThickness="1">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="Silver" />
+                                        <GradientStop Offset="1" Color="Gray" />
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+
+                                <Border.Background>
+                                    <LinearGradientBrush EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="White" />
+                                        <GradientStop Offset="1" Color="#FFF2F2F2" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" Visibility="{TemplateBinding ShowKnownColors, Converter={StaticResource BoolToVisConverter}}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0" Background="#FFEBEBEB" Padding="2"><Bold>Known colors</Bold></TextBlock>
+
+                                        <ListBox Name="knownColorsListBox" Background="Transparent"
+                                         ItemTemplate="{StaticResource ColorItemTemplate}"
+                                         ItemContainerStyle="{StaticResource ColorListBoxItemStyle}"
+                                         Grid.Row="1" BorderThickness="0" Style="{x:Null}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Width="160" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
+                                    </Grid>
+
+                                    <Grid Grid.Row="1" Visibility="{TemplateBinding ShowStandardColors, Converter={StaticResource BoolToVisConverter}}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0" Background="#FFEBEBEB" Padding="2"><Bold>Standard colors</Bold></TextBlock>
+
+                                        <ListBox Name="standardColorsListBox" Background="Transparent"
+                                         ItemTemplate="{StaticResource ColorItemTemplate}"
+                                         ItemContainerStyle="{StaticResource ColorListBoxItemStyle}"
+                                         Grid.Row="1" BorderThickness="0" Style="{x:Null}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Width="160" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Popup>
+
+                        <ContentPresenter Content="{TemplateBinding Content}" RecognizesAccessKey="True" VerticalAlignment="Center" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

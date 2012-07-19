@@ -1,0 +1,188 @@
+﻿<Window x:Class="TAlex.WPFControlsDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:talex="http://schemas.talex-soft.com/2010/xaml/presentation"
+    Width="600" Height="400"
+    Title="T-Alex WPF Controls" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="22" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="23" />
+        </Grid.RowDefinitions>
+        
+        <Menu Margin="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit" InputGestureText="Alt+F4" Click="exitMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+        
+        <TabControl Grid.Row="1">
+            <TabItem Header="NumericUpDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="170" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <talex:NumericUpDown x:Name="numericUpDown" VerticalAlignment="Center" Width="100" Height="22"
+                                       IsReadOnly="{Binding IsChecked, ElementName=isReadOnlyCheckBox, Mode=TwoWay}"
+                                       InterceptArrowKeys="{Binding IsChecked, ElementName=interceptArrowKeysCheckBox, Mode=TwoWay}">
+                    </talex:NumericUpDown>
+
+                    <StackPanel Grid.Column="1">
+                        <GroupBox Header="Properties" Margin="5,5,5,0" Height="190">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="82" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                
+                                <Label VerticalAlignment="Center">Minimum:</Label>
+                                <TextBox Margin="0,0,4,0" Height="23" Name="minimumTextBox" Grid.Column="1">0</TextBox>
+                                <Label VerticalAlignment="Center" Grid.Row="1">Maximum:</Label>
+                                <TextBox Margin="0,0,4,0" Height="23" Name="maximumTextBox" Grid.Row="1" Grid.Column="1">100</TextBox>
+                                <Label VerticalAlignment="Center" Grid.Row="2">Increment:</Label>
+                                <TextBox Margin="0,0,4,0" Height="23" Name="incrementTextBox" Grid.Row="2" Grid.Column="1">1</TextBox>
+                                <Label VerticalAlignment="Center" Grid.Row="3">Decimals:</Label>
+                                <TextBox Margin="0,0,4,0" Height="23" Name="decimalsTextBox" Grid.Row="3" Grid.Column="1">0</TextBox>
+                                <CheckBox Margin="5,0,0,0" VerticalAlignment="Center" Name="isReadOnlyCheckBox" IsChecked="False" Grid.Row="4" Grid.ColumnSpan="2">Is read only</CheckBox>
+                                <CheckBox Margin="5,0,0,0" IsChecked="True" VerticalAlignment="Center" Name="interceptArrowKeysCheckBox" Grid.Row="5" Grid.ColumnSpan="2">Intercept arrow keys</CheckBox>
+                            </Grid>
+                        </GroupBox>
+
+                        <Button Click="applyButton_Click" Margin="5,5,5,0" Height="30">Apply Properties</Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="ColorChip">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="190" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <talex:ColorChip x:Name="colorChip" Grid.ColumnSpan="2" SelectedColor="Black" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Background">Background</talex:ColorChip>
+                    
+                    <StackPanel Grid.Column="1" Margin="5,5,5,0">
+                        <GroupBox Header="Properties" Height="110">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                
+                                <CheckBox Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="0" IsChecked="{Binding Path=ShowStandardToolTip, ElementName=colorChip}">Show standard tooltip</CheckBox>
+                                <CheckBox Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="1" IsChecked="{Binding Path=ShowColorPalettesPopup, ElementName=colorChip}">Show color palettes popup</CheckBox>
+                                <CheckBox Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="2" IsChecked="{Binding Path=ShowKnownColors, ElementName=colorChip}">Show known colors</CheckBox>
+                                <CheckBox Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="3" IsChecked="{Binding Path=ShowStandardColors, ElementName=colorChip}">Show standard colors</CheckBox>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="ColorComboBox">
+                <talex:ColorComboBox x:Name="colorComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedColor="Green" />
+            </TabItem>
+            
+            <TabItem Header="ColorPickerDialog">
+                <Rectangle Name="colorPickerDialogPreviewRectangle" Width="150" Height="70" RadiusX="10" RadiusY="10" Stroke="Gray" StrokeThickness="2" Fill="Red" MouseLeftButtonUp="colorPickerDialogPreviewRectangle_MouseLeftButtonUp" />
+            </TabItem>
+            
+            <TabItem Header="FontChooserDialog">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="190" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Name="previewText" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Background="Transparent" MouseLeftButtonUp="previewText_MouseLeftButtonUp">The quick brown fox jumps over the lazy dog</TextBlock>
+                    
+                    <StackPanel Grid.Column="1" Margin="5,5,5,0">
+                        <GroupBox Header="Properties" Height="70">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                
+                                <CheckBox Name="showTextDecorationsCheckBox" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="0" IsChecked="True" >Show text decorations</CheckBox>
+                                <CheckBox Name="showColorCheckBox" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="1" IsChecked="True">Show color</CheckBox>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="FolderBrowserDialog">
+                <DockPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="40,0,40,0">
+                    <Button DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5,0,0,0" Width="25" Click="choiceFolderButton_Click">...</Button>
+                    <TextBox Name="folderPathTextBox" VerticalAlignment="Center"></TextBox>
+                </DockPanel>
+            </TabItem>
+            
+            <TabItem Header="Drag &amp; Drop">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox SelectionMode="Extended">
+                        <talex:DragAndDropService.DragAndDropManager>
+                            <talex:ItemsControlDragDropManager DataFormat="SomeFormat" />
+                        </talex:DragAndDropService.DragAndDropManager>
+
+                        <ListBox.Items>
+                            <ListBoxItem>Item 1</ListBoxItem>
+                            <ListBoxItem>Item 2</ListBoxItem>
+                            <ListBoxItem>Item 3</ListBoxItem>
+                            <ListBoxItem>Item 4</ListBoxItem>
+                            <ListBoxItem>Item 5</ListBoxItem>
+                            <ListBoxItem>Item 6</ListBoxItem>
+                            <ListBoxItem>Item 7</ListBoxItem>
+                            <ListBoxItem>Item 8</ListBoxItem>
+                            <ListBoxItem>Item 9</ListBoxItem>
+                            <ListBoxItem>Item 10</ListBoxItem>
+                            <ListBoxItem>Item 11</ListBoxItem>
+                            <ListBoxItem>Item 12</ListBoxItem>
+                            <ListBoxItem>Item 13</ListBoxItem>
+                            <ListBoxItem>Item 14</ListBoxItem>
+                            <ListBoxItem>Item 15</ListBoxItem>
+                            <ListBoxItem>Item 16</ListBoxItem>
+                            <ListBoxItem>Item 17</ListBoxItem>
+                            <ListBoxItem>Item 18</ListBoxItem>
+                            <ListBoxItem>Item 19</ListBoxItem>
+                        </ListBox.Items>
+                    </ListBox>
+                    
+                    <ListBox Grid.Column="2">
+                        <talex:DragAndDropService.DragAndDropManager>
+                            <talex:ItemsControlDragDropManager DataFormat="SomeFormat" />
+                        </talex:DragAndDropService.DragAndDropManager>
+                        
+                        <ListBox.Items>
+                            <ListBoxItem>Item 1</ListBoxItem>
+                        </ListBox.Items>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+        <StatusBar Grid.Row="2" />
+    </Grid>
+</Window>
