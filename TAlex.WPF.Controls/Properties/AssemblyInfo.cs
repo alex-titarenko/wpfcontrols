@@ -14,7 +14,7 @@ using System.Windows.Markup;
 [assembly: AssemblyTitleAttribute("Controls for WPF")]
 [assembly: AssemblyCompanyAttribute("T-Alex Software")]
 [assembly: AssemblyProductAttribute("TAlex.WPF.Controls")]
-[assembly: AssemblyCopyrightAttribute("Copyright ©  2012 T-Alex Software")]
+[assembly: AssemblyCopyrightAttribute("Copyright © 2012 T-Alex Software")]
 [assembly: AssemblyVersionAttribute("1.4.1.0")]
 [assembly: AssemblyFileVersionAttribute("1.4.1.0")]
 
@@ -22,3 +22,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.talex-soft.com/2010/xaml/presentation", "TAlex.WPF.Converters")]
 [assembly: XmlnsDefinition("http://schemas.talex-soft.com/2010/xaml/presentation", "TAlex.WPF.Services.DragAndDrop")]
 [assembly: XmlnsPrefix("http://schemas.talex-soft.com/2010/xaml/presentation", "talex")]
+[assembly: AssemblyDescriptionAttribute("Collection of controls for WPF")]
