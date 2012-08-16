@@ -1,1 +1,0 @@
-nuget pack TAlex.WPF.Controls.csproj -Build
