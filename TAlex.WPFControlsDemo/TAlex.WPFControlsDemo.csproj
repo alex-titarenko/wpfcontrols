@@ -10,7 +10,7 @@
     <WarningLevel>4</WarningLevel>
     <OutputType>winexe</OutputType>
     <!-- Most people will use Publish dialog in Visual Studio to increment this -->
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
