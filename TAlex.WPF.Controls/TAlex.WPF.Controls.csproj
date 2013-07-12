@@ -77,6 +77,7 @@
     <Compile Include="Converters\CamelTextToRegularTextConverter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\DoubleToStringConverter.cs" />
+    <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\Int32ToDecimalConverter.cs" />
     <Compile Include="Converters\NotEmptyStringToBooleanConverter.cs" />
     <Compile Include="Converters\IsNotNullToBooleanConverter.cs" />
