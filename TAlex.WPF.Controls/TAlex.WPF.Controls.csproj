@@ -81,6 +81,7 @@
     <Compile Include="Converters\Int32ToDecimalConverter.cs" />
     <Compile Include="Converters\NotEmptyStringToBooleanConverter.cs" />
     <Compile Include="Converters\IsNotNullToBooleanConverter.cs" />
+    <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\WPFVisualHelper.cs" />
     <Compile Include="Media\ColorItem.cs" />
     <Compile Include="CommonDialogs\ColorPickerDialog.xaml.cs">

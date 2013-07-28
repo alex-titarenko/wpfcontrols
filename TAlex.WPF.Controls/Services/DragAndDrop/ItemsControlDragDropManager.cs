@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Text;
@@ -9,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
+using TAlex.WPF.Helpers;
 
 
 namespace TAlex.WPF.Services.DragAndDrop
@@ -157,11 +159,16 @@ namespace TAlex.WPF.Services.DragAndDrop
                 {
                     if (targetElement.ItemsSource is ICollectionView)
                     {
-                        if (((ICollectionView)targetElement.ItemsSource).Filter != null)
+                        var collectionView = ((ICollectionView)targetElement.ItemsSource);
+                        if (collectionView.SourceCollection is IList)
                         {
-                            return null;
+                            if (((IList)collectionView.SourceCollection).Count != (collectionView).Count())
+                            {
+                                return null;
+                            }
+                            return collectionView.SourceCollection as IList;
                         }
-                        return ((ICollectionView)targetElement.ItemsSource).SourceCollection as IList;
+                        return null;
                     }
                     return targetElement.ItemsSource as IList;
                 }
