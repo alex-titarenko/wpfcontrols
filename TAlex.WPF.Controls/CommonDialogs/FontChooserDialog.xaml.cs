@@ -22,6 +22,8 @@ namespace TAlex.WPF.CommonDialogs
     {
         #region Fields
 
+        private const int ThresholdLightTone = 700;
+
         private static readonly XmlLanguage EnglishXmlLanguage = XmlLanguage.GetLanguage("en-us");
 
         private static readonly double[] CommonlyUsedFontSizes = new double[]
@@ -451,6 +453,7 @@ namespace TAlex.WPF.CommonDialogs
         {
             fontColorComboBox.SelectedColor = fontColor;
             previewTextBox.Foreground = new SolidColorBrush(fontColor);
+            previewTextBox.Background = (fontColor.R + fontColor.G + fontColor.B) > ThresholdLightTone ? Brushes.Black : Brushes.White;
         }
 
         private void OnShowTextDecorationsChanged(bool showTextDecorations)
