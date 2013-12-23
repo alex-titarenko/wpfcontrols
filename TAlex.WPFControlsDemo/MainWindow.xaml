@@ -98,6 +98,12 @@
                 <talex:ColorComboBox x:Name="colorComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedColor="Green" />
             </TabItem>
             
+            <TabItem Header="HtmlRichEditor">
+                <Grid>
+                    <talex:HtmlRichEditor />
+                </Grid>
+            </TabItem>
+            
             <TabItem Header="ColorPickerDialog">
                 <Rectangle Name="colorPickerDialogPreviewRectangle" Width="150" Height="70" RadiusX="10" RadiusY="10" Stroke="Gray" StrokeThickness="2" Fill="Red" MouseLeftButtonUp="colorPickerDialogPreviewRectangle_MouseLeftButtonUp" />
             </TabItem>

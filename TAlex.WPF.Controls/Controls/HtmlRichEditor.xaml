@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="TAlex.WPF.Controls.HtmlRichEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:talex="clr-namespace:TAlex.WPF.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="700">
+    <UserControl.Resources>
+        <FontFamily x:Key="IconicFont">/TAlex.WPF.Controls;component/Resources/Fonts/#GLYPHICONS Halflings</FontFamily>
+
+        <LinearGradientBrush x:Key="ToolBarBackground" EndPoint="0,1">
+            <GradientStop Color="White" Offset="0" />
+            <GradientStop Color="#E6E6E6" Offset="1" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ToolBarBorderBrush" EndPoint="0,1">
+            <GradientStop Color="#e0e0e0" Offset="0" />
+            <GradientStop Color="#c6c6c6" Offset="1" />
+        </LinearGradientBrush>
+        
+        <Style x:Key="TooBarStyle" TargetType="{x:Type ToolBar}">
+            <Setter Property="Background" Value="{StaticResource ToolBarBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource ToolBarBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>        
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="20" />
+        </Style>
+        <Style x:Key="IconicButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="FontFamily" Value="{StaticResource IconicFont}" />
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <DockPanel>
+            <ToolBarTray DockPanel.Dock="Top">
+                <ToolBarTray.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#dfdfdf" Offset="0" />
+                        <GradientStop Color="#fafafa" Offset="1" />
+                    </LinearGradientBrush>
+                </ToolBarTray.Background>
+
+                <ToolBar Style="{StaticResource TooBarStyle}">
+                    <ComboBox SelectedIndex="0" MinWidth="110">
+                        <ComboBoxItem>Segoe UI</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0">
+                        <ComboBoxItem>10pt</ComboBoxItem>
+                    </ComboBox>
+                </ToolBar>
+                
+                <ToolBar Style="{StaticResource TooBarStyle}">
+                    <Button Content="B" FontWeight="Bold" FontSize="14" ToolTip="Bold" Style="{StaticResource ButtonStyle}" />
+                    <Button Content="I" FontStyle="Italic" FontSize="14" ToolTip="Italic" Style="{StaticResource ButtonStyle}" />
+                    <Button ToolTip="Underline" VerticalContentAlignment="Center" Style="{StaticResource ButtonStyle}">
+                        <TextBlock TextDecorations="Underline" FontSize="14" VerticalAlignment="Center">
+                            U
+                        </TextBlock>
+                    </Button>
+                    <Grid>
+                        <talex:ColorChip Margin="1,1,0,0" x:Name="FontColorChip" ToolTip="Font color" SelectedColor="Black" BorderThickness="0" />
+                        <Border Background="White" Margin="0,0,0,5" Width="17" IsHitTestVisible="False" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Text="A" IsHitTestVisible="False" />
+                    </Grid>
+                    <Grid>
+                        <talex:ColorChip Margin="1,1,0,0" SelectedColor="Transparent" ToolTip="Font color" BorderBrush="Silver" BorderThickness="1" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Text="A" IsHitTestVisible="False" />
+                    </Grid>
+                    <Button Content="" ToolTip="Clear Style" Style="{StaticResource IconicButtonStyle}" />
+                </ToolBar>
+                <ToolBar Style="{StaticResource TooBarStyle}">
+                    <Button Content="" ToolTip="Align text left" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Center" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Align text right" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Justify" Style="{StaticResource IconicButtonStyle}" />
+                </ToolBar>
+                <ToolBar Style="{StaticResource TooBarStyle}">
+                    <Button Content="" ToolTip="Unordered list" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Ordered list" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Outdent" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Indent" Style="{StaticResource IconicButtonStyle}" />
+                </ToolBar>
+                <ToolBar Style="{StaticResource TooBarStyle}">
+                    <Button Content="" ToolTip="Insert Hyperlink" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Insert Image" Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Insert Table"  Style="{StaticResource IconicButtonStyle}" />
+                </ToolBar>
+                <ToolBar Style="{StaticResource TooBarStyle}">
+                    <Button Content="✏" ToolTip="Edit Html" Style="{StaticResource IconicButtonStyle}" />
+                </ToolBar>
+            </ToolBarTray>
+            
+            <Grid>
+                <TextBox x:Name="CodeEditor" AcceptsReturn="True" AcceptsTab="True" AutoWordSelection="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" />
+                <WebBrowser Name="VisualEditor" />
+            </Grid>
+        </DockPanel>    
+    </Grid>
+</UserControl>
