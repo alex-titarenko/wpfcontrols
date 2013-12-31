@@ -28,10 +28,23 @@
             <Setter Property="Height" Value="20" />
             <Setter Property="Width" Value="20" />
         </Style>
+        <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="20" />
+        </Style>
         <Style x:Key="IconicButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="FontFamily" Value="{StaticResource IconicFont}" />
         </Style>
+        <Style x:Key="IconicToggleButtonStyle" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ToggleButtonStyle}">
+            <Setter Property="FontFamily" Value="{StaticResource IconicFont}" />
+        </Style>
     </UserControl.Resources>
+    
+    <UserControl.CommandBindings>
+        <CommandBinding Command="talex:HtmlEditingCommands.ToggleEditHtml" Executed="EditHtmlExecuted" CanExecute="EditHtmlCanExecute" />
+        <CommandBinding Command="talex:HtmlEditingCommands.ToggleBold" Executed="BoldExecuted" CanExecute="EditingCommandCanExecute" />
+    </UserControl.CommandBindings>
     
     <Grid>
         <DockPanel>
@@ -53,13 +66,13 @@
                 </ToolBar>
                 
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <Button Content="B" FontWeight="Bold" FontSize="14" ToolTip="Bold" Style="{StaticResource ButtonStyle}" />
-                    <Button Content="I" FontStyle="Italic" FontSize="14" ToolTip="Italic" Style="{StaticResource ButtonStyle}" />
-                    <Button ToolTip="Underline" VerticalContentAlignment="Center" Style="{StaticResource ButtonStyle}">
+                    <ToggleButton Content="B" FontWeight="Bold" FontSize="14" ToolTip="Bold" Style="{StaticResource ToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleBold" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Content="I" FontStyle="Italic" FontSize="14" ToolTip="Italic" Style="{StaticResource ToggleButtonStyle}" />
+                    <ToggleButton ToolTip="Underline" VerticalContentAlignment="Center" Style="{StaticResource ToggleButtonStyle}">
                         <TextBlock TextDecorations="Underline" FontSize="14" VerticalAlignment="Center">
                             U
                         </TextBlock>
-                    </Button>
+                    </ToggleButton>
                     <Grid>
                         <talex:ColorChip Margin="1,1,0,0" x:Name="FontColorChip" ToolTip="Font color" SelectedColor="Black" BorderThickness="0" />
                         <Border Background="White" Margin="0,0,0,5" Width="17" IsHitTestVisible="False" />
@@ -89,7 +102,7 @@
                     <Button Content="" ToolTip="Insert Table"  Style="{StaticResource IconicButtonStyle}" />
                 </ToolBar>
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <Button Content="✏" ToolTip="Edit Html" Style="{StaticResource IconicButtonStyle}" />
+                    <ToggleButton Content="✏" ToolTip="Edit Html" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleEditHtml" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                 </ToolBar>
             </ToolBarTray>
             
