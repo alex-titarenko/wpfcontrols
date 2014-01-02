@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using mshtml;
+
 
 namespace TAlex.WPF.Controls
 {
@@ -54,6 +56,14 @@ namespace TAlex.WPF.Controls
             }
         }
 
+        private HTMLDocument HtmlDocument
+        {
+            get
+            {
+                return VisualEditor != null ? (HTMLDocument)VisualEditor.Document : null;
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -67,6 +77,7 @@ namespace TAlex.WPF.Controls
         public HtmlRichEditor()
         {
             InitializeComponent();
+            InitVisualEditor();
         }
 
         #endregion
@@ -77,45 +88,189 @@ namespace TAlex.WPF.Controls
 
         private static void OnEditModeChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
+            HtmlRichEditor editor = (HtmlRichEditor)sender;
 
-            //HtmlRichEditor editor = (HtmlRichEditor)sender;
-            //if ((EditMode)e.NewValue == EditMode.Visual) editor.SetVisualMode();
-            //else editor.SetSourceMode();
+            if ((EditMode)e.NewValue == EditMode.Visual)
+                editor.SetVisualMode();
+            else
+                editor.SetSourceMode();
         }
 
         private static void OnHtmlSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
-
-            //HtmlRichEditor editor = (HtmlRichEditor)sender;
-            //editor.myBindingContent = (string)e.NewValue;
-            //editor.ContentHtml = editor.myBindingContent; 
+            HtmlRichEditor editor = (HtmlRichEditor)sender;
+            editor.UpdateHtmlSource((string)e.NewValue);
         }
 
         #endregion
 
         #region Command Event Bindings
 
-        private void EditHtmlExecuted(object sender, ExecutedRoutedEventArgs e)
+        private void EditHtml_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             EditMode = (EditMode == EditMode.Source) ? EditMode.Visual : EditMode.Source;
         }
 
-        private void EditHtmlCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void EditHtml_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        private void BoldExecuted(object sender, ExecutedRoutedEventArgs e)
+
+        private void Bold_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
-            //if (htmldoc != null) htmldoc.Bold();
+            ExecuteHtmlCommand("Bold");
         }
 
-        private void EditingCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void Italic_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            e.CanExecute = /*htmldoc != null &&*/ EditMode == EditMode.Visual;
+            ExecuteHtmlCommand("Italic");
+        }
+
+        private void Underline_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("Underline");
+        }
+
+        private void ClearStyle_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("RemoveFormat");
+        }
+
+
+        private void UnorderedList_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("InsertUnorderedList");
+        }
+
+        private void OrderedList_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("InsertOrderedList");
+        }
+
+        private void DecreaseIndent_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("Outdent");
+        }
+
+        private void IncreaseIndent_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("Indent");
+        }
+
+
+        private void JustifyLeft_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("JustifyLeft");
+        }
+
+        private void JustifyCenter_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("JustifyCenter");
+        }
+
+        private void JustifyRight_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("JustifyRight");
+        }
+
+        private void JustifyFull_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteHtmlCommand("JustifyFull");
+        }
+
+
+        private void EditingCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = HtmlDocument != null && EditMode == EditMode.Visual;
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private void SetVisualMode()
+        {
+            if (EditMode == Controls.EditMode.Visual)
+            {
+                CodeEditor.Visibility = System.Windows.Visibility.Hidden;
+                VisualEditor.Visibility = System.Windows.Visibility.Visible;
+
+                UpdateHtmlSource(CodeEditor.Text);
+            }
+        }
+
+        private void SetSourceMode()
+        {
+            if (EditMode == Controls.EditMode.Source)
+            {
+                VisualEditor.Visibility = System.Windows.Visibility.Hidden;
+                CodeEditor.Visibility = System.Windows.Visibility.Visible;
+
+                UpdateHtmlSource(HtmlDocument.body.innerHTML);
+            }
+        }
+
+        private void UpdateHtmlSource(string source)
+        {
+            if (EditMode == Controls.EditMode.Visual)
+                HtmlDocument.body.innerHTML = source;
+            else
+                CodeEditor.Text = source;
+        }
+
+        private void ExecuteHtmlCommand(string command)
+        {
+            if (HtmlDocument != null) HtmlDocument.execCommand(command, false, null);
+        }
+
+        private void InitVisualEditor()
+        {
+            VisualEditor.NavigateToString(WrapHtmlContent(String.Empty));
+            //HtmlDocument.
+        }
+
+        public static string WrapHtmlContent(string source)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(
+                @"<html>
+                    <head>
+                        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+
+                        <style type='text/css'>
+                            body { font: 14px verdana; color: #505050; background: #fcfcfc; }
+                        </style>
+
+                        <script language='JScript'>
+                            function onContextMenu()
+                            {
+                              if (window.event.srcElement.tagName !='INPUT') 
+                              {
+                                window.event.returnValue = false;  
+                                window.event.cancelBubble = true;
+                                return false;
+                              }
+                            }
+
+                            function onLoad()
+                            {
+                              document.oncontextmenu = onContextMenu; 
+                            }
+                        </script>
+                    </head>
+                    <body contenteditable onload='onLoad();'>"
+                );
+
+            sb.Append(source);
+
+            sb.Append(
+                    @"</body>
+                </html>"
+                );
+
+            return sb.ToString();
         }
 
         #endregion
@@ -137,6 +292,19 @@ namespace TAlex.WPF.Controls
 
         private static readonly RoutedUICommand _toggleEditHtml = new RoutedUICommand();//"Edit Html", "EditHtml", null);
         private static readonly RoutedUICommand _toggleBold = new RoutedUICommand();//"Bold", "ToggleBold", typeof(HtmlRichEditor));
+        private static readonly RoutedUICommand _toggleItalic = new RoutedUICommand();
+        private static readonly RoutedUICommand _toggleUnderline = new RoutedUICommand();
+        private static readonly RoutedUICommand _clearStyle = new RoutedUICommand();
+
+        private static readonly RoutedUICommand _toggleUnorderedList = new RoutedUICommand();
+        private static readonly RoutedUICommand _toggleOrderedList = new RoutedUICommand();
+        private static readonly RoutedUICommand _decreaseIndent = new RoutedUICommand();
+        private static readonly RoutedUICommand _increaseIndent = new RoutedUICommand();
+
+        private static readonly RoutedUICommand _justifyLeft = new RoutedUICommand();
+        private static readonly RoutedUICommand _justifyCenter = new RoutedUICommand();
+        private static readonly RoutedUICommand _justifyRight = new RoutedUICommand();
+        private static readonly RoutedUICommand _justifyFull = new RoutedUICommand();
 
         #endregion
 
@@ -152,13 +320,68 @@ namespace TAlex.WPF.Controls
             get { return _toggleBold; }
         }
 
+        public static RoutedUICommand ToggleItalic
+        {
+            get { return _toggleItalic; }
+        }
+
+        public static RoutedUICommand ToggleUnderline
+        {
+            get { return _toggleUnderline; }
+        }
+
+        public static RoutedUICommand ClearStyle
+        {
+            get { return _clearStyle; }
+        }
+
+        public static RoutedUICommand ToggleUnorderedList
+        {
+            get { return _toggleUnorderedList; }
+        }
+
+        public static RoutedUICommand ToggleOrderedList
+        {
+            get { return _toggleOrderedList; }
+        }
+
+        public static RoutedUICommand DecreaseIndent
+        {
+            get { return _decreaseIndent; }
+        }
+
+        public static RoutedUICommand IncreaseIndent
+        {
+            get { return _increaseIndent; }
+        }
+
+
+        public static RoutedUICommand JustifyLeft
+        {
+            get { return _justifyLeft; }
+        }
+
+        public static RoutedUICommand JustifyCenter
+        {
+            get { return _justifyCenter; }
+        }
+
+        public static RoutedUICommand JustifyRight
+        {
+            get { return _justifyRight; }
+        }
+
+        public static RoutedUICommand JustifyFull
+        {
+            get { return _justifyFull; }
+        }
+
         #endregion
 
         #region Constructors
 
         static HtmlEditingCommands()
         {
-            ToggleEditHtml.InputGestures.Add(new KeyGesture(Key.B, ModifierKeys.Control));
         }
 
         #endregion

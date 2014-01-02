@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:talex="http://schemas.talex-soft.com/2010/xaml/presentation"
-    Width="600" Height="400"
+    Width="700" Height="500"
     Title="T-Alex WPF Controls" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
