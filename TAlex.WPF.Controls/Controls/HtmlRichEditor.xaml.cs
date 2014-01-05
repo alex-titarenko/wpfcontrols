@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using mshtml;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
+using TAlex.WPF.Helpers;
 
 
 namespace TAlex.WPF.Controls
@@ -117,6 +118,11 @@ namespace TAlex.WPF.Controls
         private void EditHtml_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             EditMode = (EditMode == EditMode.Source) ? EditMode.Visual : EditMode.Source;
+            bool canEdit = EditMode == Controls.EditMode.Visual;
+            FontColorChip.IsEnabled = canEdit;
+            BackColorChip.IsEnabled = canEdit;
+            FontFamilyList.IsEnabled = canEdit;
+            FontSizeList.IsEnabled = canEdit;
         }
 
         private void EditHtml_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -199,8 +205,15 @@ namespace TAlex.WPF.Controls
 
         private void StyleTimer_Tick(object sender, EventArgs e)
         {
+            string fontName = GetHtmlCommandValue(HtmlCommands.FontName);
+            FontFamilyList.SelectionChanged -= FontFamilyList_SelectionChanged;
+            FontFamilyList.SelectedItem = FontFamilyList.Items.Cast<string>().FirstOrDefault(x => x == fontName);
+            FontFamilyList.SelectionChanged += FontFamilyList_SelectionChanged;
+
             string fontSize = GetHtmlCommandValue(HtmlCommands.FontSize);
+            FontSizeList.SelectionChanged -= FontSizeList_SelectionChanged;
             FontSizeList.SelectedItem = FontSizeList.Items.Cast<Controls.FontSize>().FirstOrDefault(x => x.Key == fontSize);
+            FontSizeList.SelectionChanged += FontSizeList_SelectionChanged;
 
             ToggleBold.IsChecked = GetHtmlCommandState(HtmlCommands.Bold);
             ToggleItalic.IsChecked = GetHtmlCommandState(HtmlCommands.Italic);
@@ -211,24 +224,14 @@ namespace TAlex.WPF.Controls
             JustifyFull.IsChecked = GetHtmlCommandState(HtmlCommands.JustifyFull);
             ToggleUnorderedList.IsChecked = GetHtmlCommandState(HtmlCommands.InsertUnorderedList);
             ToggleOrderedList.IsChecked = GetHtmlCommandState(HtmlCommands.InsertOrderedList);
-            FontColorChip.SelectedColor = (Color)ColorConverter.ConvertFromString(GetHtmlCommandColor(HtmlCommands.ForeColor, "#000000"));
-            BackColorChip.SelectedColor = (Color)ColorConverter.ConvertFromString(GetHtmlCommandColor(HtmlCommands.BackColor, "#FF000000"));
-        }
 
-        private void FontColorChip_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
-        {
-            if (e.OldValue != e.NewValue)
-            {
-                ExecuteHtmlCommand(HtmlCommands.ForeColor, ColorToString(e.NewValue));
-            }
-        }
+            FontColorChip.SelectedColorChanged -= FontColorChip_SelectedColorChanged;
+            FontColorChip.SelectedColor = GetHtmlCommandValueAsColor(HtmlCommands.ForeColor, Colors.Black);
+            FontColorChip.SelectedColorChanged += FontColorChip_SelectedColorChanged;
 
-        private void BackColorChip_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
-        {
-            if (e.OldValue != e.NewValue)
-            {
-                ExecuteHtmlCommand(HtmlCommands.BackColor, ColorToString(e.NewValue));
-            }
+            BackColorChip.SelectedColorChanged -= BackColorChip_SelectedColorChanged;
+            BackColorChip.SelectedColor = GetHtmlCommandValueAsColor(HtmlCommands.BackColor, Colors.Transparent);
+            BackColorChip.SelectedColorChanged += BackColorChip_SelectedColorChanged;
         }
 
         private void FontSizeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -237,6 +240,31 @@ namespace TAlex.WPF.Controls
             if (selectedFontSize != null)
             {
                 ExecuteHtmlCommand(HtmlCommands.FontSize, selectedFontSize.Key);
+            }
+        }
+
+        private void FontFamilyList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedFontName = FontFamilyList.SelectedItem as string;
+            if (selectedFontName != null)
+            {
+                ExecuteHtmlCommand(HtmlCommands.FontName, selectedFontName);
+            }
+        }
+
+        private void FontColorChip_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+            if (e.OldValue != e.NewValue)
+            {
+                ExecuteHtmlCommand(HtmlCommands.ForeColor, ColorHelper.ColorToString(e.NewValue));
+            }
+        }
+
+        private void BackColorChip_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+            if (e.OldValue != e.NewValue)
+            {
+                ExecuteHtmlCommand(HtmlCommands.BackColor, ColorHelper.ColorToString(e.NewValue));
             }
         }
 
@@ -296,25 +324,43 @@ namespace TAlex.WPF.Controls
             }
         }
 
-        private string GetHtmlCommandColor(string command, string defaultColor)
+        private Color GetHtmlCommandValueAsColor(string command, Color defaultColor)
         {
-            var color = GetHtmlCommandValue(command);
-            if (!String.IsNullOrEmpty(color))
+            var value = GetHtmlCommandValue(command);
+            if (!String.IsNullOrEmpty(value))
             {
-                if (color.StartsWith("#")) return color;
-                return String.Format("#{0:X6}", int.Parse(color));
+                if (value.StartsWith("#")) return (Color)ColorConverter.ConvertFromString(value);
+                return (Color)ColorConverter.ConvertFromString(String.Format("#FF{0:X6}", ColorHelper.BgrToRgb(int.Parse(value))));
             }
             return defaultColor;
         }
 
-        private string ColorToString(Color color)
+
+        private ReadOnlyCollection<string> GetDefaultFontFamilies()
         {
-            return String.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B);
+            List<string> ls = new List<string>
+            {
+                "Arial",
+                "Calibri",
+                "Cambria",
+                "Candara",
+                "Century",
+                "Consolas",
+                "Constantia",
+                "Corbel",
+                "Courier New",
+                "Segoe UI",
+                "Tahoma",
+                "Times New Roman",
+                "Verdana",
+                "Vrinda"
+            };
+            return new ReadOnlyCollection<string>(ls);
         }
 
         private ReadOnlyCollection<FontSize> GetDefaultFontSizes()
         {
-            List<FontSize> ls = new List<FontSize>()
+            List<FontSize> ls = new List<FontSize>
             {
                 Controls.FontSize.XXSmall,
                 Controls.FontSize.XSmall,
@@ -333,50 +379,26 @@ namespace TAlex.WPF.Controls
 
             FontSizeList.ItemsSource = GetDefaultFontSizes();
             FontSizeList.SelectionChanged += FontSizeList_SelectionChanged;
-            //HtmlDocument.
+
+            FontFamilyList.ItemsSource = GetDefaultFontFamilies();
+            FontFamilyList.SelectionChanged += FontFamilyList_SelectionChanged;
         }
 
-        public static string WrapHtmlContent(string source)
+        private static string WrapHtmlContent(string source, string styles = null)
         {
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append(
+            return String.Format(
                 @"<html>
                     <head>
                         <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 
                         <style type='text/css'>
-                            body { font: 14px verdana; color: #505050; background: #fcfcfc; }
+                            body {{ font: 14px verdana; color: #505050; background: #fcfcfc; }}
+                            {1}
                         </style>
-
-                        <script language='JScript'>
-                            function onContextMenu()
-                            {
-                              if (window.event.srcElement.tagName !='INPUT') 
-                              {
-                                window.event.returnValue = false;  
-                                window.event.cancelBubble = true;
-                                return false;
-                              }
-                            }
-
-                            function onLoad()
-                            {
-                              document.oncontextmenu = onContextMenu; 
-                            }
-                        </script>
                     </head>
-                    <body contenteditable onload='onLoad();'>"
-                );
-
-            sb.Append(source);
-
-            sb.Append(
-                    @"</body>
-                </html>"
-                );
-
-            return sb.ToString();
+                    <body contenteditable>{0}</body>
+                </html>",
+                source, styles);
         }
 
         #endregion
@@ -498,18 +520,11 @@ namespace TAlex.WPF.Controls
         }
 
         #endregion
-
-        #region Constructors
-
-        static HtmlEditingCommands()
-        {
-        }
-
-        #endregion
     }
 
     public static class HtmlCommands
     {
+        public static readonly string FontName = "FontName";
         public static readonly string FontSize = "FontSize";
 
         public static readonly string Bold = "Bold";

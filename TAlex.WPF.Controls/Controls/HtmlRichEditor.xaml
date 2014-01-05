@@ -74,9 +74,8 @@
                 </ToolBar>
 
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <ComboBox SelectedIndex="0" MinWidth="110">
-                        <ComboBoxItem>Segoe UI</ComboBoxItem>
-                    </ComboBox>
+                    <ComboBox Name="FontFamilyList" Width="110" />
+
                     <ComboBox Name="FontSizeList" Width="40">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
