@@ -318,8 +318,8 @@ namespace TAlex.WPF.Controls
         /// <param name="newValue">New value of the color.</param>
         protected virtual void OnSelectedColorChanged(Color oldValue, Color newValue)
         {
-            RoutedPropertyChangedEventArgs<Color> args = new RoutedPropertyChangedEventArgs<Color>(oldValue, newValue);
-            args.RoutedEvent = ColorComboBox.SelectedColorChangedEvent;
+            RoutedPropertyChangedEventArgs<Color> args = new RoutedPropertyChangedEventArgs<Color>(oldValue, newValue, SelectedColorChangedEvent);
+            args.Source = this;
             RaiseEvent(args);
         }
 

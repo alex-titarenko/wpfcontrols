@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using mshtml;
+using System.Windows.Threading;
+using System.Collections.ObjectModel;
 
 
 namespace TAlex.WPF.Controls
@@ -25,6 +27,8 @@ namespace TAlex.WPF.Controls
 
         public static readonly DependencyProperty HtmlSourceProperty;
         public static readonly DependencyProperty EditModeProperty;
+
+        private DispatcherTimer _styleTimer;
 
         #endregion
 
@@ -56,11 +60,11 @@ namespace TAlex.WPF.Controls
             }
         }
 
-        private HTMLDocument HtmlDocument
+        private IHTMLDocument2 HtmlDocument
         {
             get
             {
-                return VisualEditor != null ? (HTMLDocument)VisualEditor.Document : null;
+                return VisualEditor != null ? (IHTMLDocument2)VisualEditor.Document : null;
             }
         }
 
@@ -78,6 +82,10 @@ namespace TAlex.WPF.Controls
         {
             InitializeComponent();
             InitVisualEditor();
+
+            _styleTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
+            _styleTimer.Tick += StyleTimer_Tick;
+            _styleTimer.Start();
         }
 
         #endregion
@@ -119,70 +127,117 @@ namespace TAlex.WPF.Controls
 
         private void Bold_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("Bold");
+            ExecuteHtmlCommand(HtmlCommands.Bold);
         }
 
         private void Italic_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("Italic");
+            ExecuteHtmlCommand(HtmlCommands.Italic);
         }
 
         private void Underline_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("Underline");
+            ExecuteHtmlCommand(HtmlCommands.Underline);
         }
 
         private void ClearStyle_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("RemoveFormat");
+            ExecuteHtmlCommand(HtmlCommands.RemoveFormat);
         }
 
 
         private void UnorderedList_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("InsertUnorderedList");
+            ExecuteHtmlCommand(HtmlCommands.InsertUnorderedList);
         }
 
         private void OrderedList_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("InsertOrderedList");
+            ExecuteHtmlCommand(HtmlCommands.InsertOrderedList);
         }
 
         private void DecreaseIndent_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("Outdent");
+            ExecuteHtmlCommand(HtmlCommands.Outdent);
         }
 
         private void IncreaseIndent_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("Indent");
+            ExecuteHtmlCommand(HtmlCommands.Indent);
         }
 
 
         private void JustifyLeft_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("JustifyLeft");
+            ExecuteHtmlCommand(HtmlCommands.JustifyLeft);
         }
 
         private void JustifyCenter_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("JustifyCenter");
+            ExecuteHtmlCommand(HtmlCommands.JustifyCenter);
         }
 
         private void JustifyRight_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("JustifyRight");
+            ExecuteHtmlCommand(HtmlCommands.JustifyRight);
         }
 
         private void JustifyFull_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ExecuteHtmlCommand("JustifyFull");
+            ExecuteHtmlCommand(HtmlCommands.JustifyFull);
         }
 
 
         private void EditingCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = HtmlDocument != null && EditMode == EditMode.Visual;
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void StyleTimer_Tick(object sender, EventArgs e)
+        {
+            string fontSize = GetHtmlCommandValue(HtmlCommands.FontSize);
+            FontSizeList.SelectedItem = FontSizeList.Items.Cast<Controls.FontSize>().FirstOrDefault(x => x.Key == fontSize);
+
+            ToggleBold.IsChecked = GetHtmlCommandState(HtmlCommands.Bold);
+            ToggleItalic.IsChecked = GetHtmlCommandState(HtmlCommands.Italic);
+            ToggleUnderline.IsChecked = GetHtmlCommandState(HtmlCommands.Underline);
+            JustifyLeft.IsChecked = GetHtmlCommandState(HtmlCommands.JustifyLeft);
+            JustifyCenter.IsChecked = GetHtmlCommandState(HtmlCommands.JustifyCenter);
+            JustifyRight.IsChecked = GetHtmlCommandState(HtmlCommands.JustifyRight);
+            JustifyFull.IsChecked = GetHtmlCommandState(HtmlCommands.JustifyFull);
+            ToggleUnorderedList.IsChecked = GetHtmlCommandState(HtmlCommands.InsertUnorderedList);
+            ToggleOrderedList.IsChecked = GetHtmlCommandState(HtmlCommands.InsertOrderedList);
+            FontColorChip.SelectedColor = (Color)ColorConverter.ConvertFromString(GetHtmlCommandColor(HtmlCommands.ForeColor, "#000000"));
+            BackColorChip.SelectedColor = (Color)ColorConverter.ConvertFromString(GetHtmlCommandColor(HtmlCommands.BackColor, "#FF000000"));
+        }
+
+        private void FontColorChip_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+            if (e.OldValue != e.NewValue)
+            {
+                ExecuteHtmlCommand(HtmlCommands.ForeColor, ColorToString(e.NewValue));
+            }
+        }
+
+        private void BackColorChip_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+            if (e.OldValue != e.NewValue)
+            {
+                ExecuteHtmlCommand(HtmlCommands.BackColor, ColorToString(e.NewValue));
+            }
+        }
+
+        private void FontSizeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedFontSize = FontSizeList.SelectedItem as Controls.FontSize;
+            if (selectedFontSize != null)
+            {
+                ExecuteHtmlCommand(HtmlCommands.FontSize, selectedFontSize.Key);
+            }
         }
 
         #endregion
@@ -219,14 +274,65 @@ namespace TAlex.WPF.Controls
                 CodeEditor.Text = source;
         }
 
-        private void ExecuteHtmlCommand(string command)
+        private void ExecuteHtmlCommand(string command, object value = null)
         {
-            if (HtmlDocument != null) HtmlDocument.execCommand(command, false, null);
+            if (HtmlDocument != null) HtmlDocument.execCommand(command, false, value);
         }
+
+        private bool GetHtmlCommandState(string command)
+        {
+            return (HtmlDocument != null) && HtmlDocument.queryCommandState(command);
+        }
+
+        private string GetHtmlCommandValue(string command)
+        {
+            try
+            {
+                return (HtmlDocument != null) ? HtmlDocument.queryCommandValue(command).ToString() : null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private string GetHtmlCommandColor(string command, string defaultColor)
+        {
+            var color = GetHtmlCommandValue(command);
+            if (!String.IsNullOrEmpty(color))
+            {
+                if (color.StartsWith("#")) return color;
+                return String.Format("#{0:X6}", int.Parse(color));
+            }
+            return defaultColor;
+        }
+
+        private string ColorToString(Color color)
+        {
+            return String.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B);
+        }
+
+        private ReadOnlyCollection<FontSize> GetDefaultFontSizes()
+        {
+            List<FontSize> ls = new List<FontSize>()
+            {
+                Controls.FontSize.XXSmall,
+                Controls.FontSize.XSmall,
+                Controls.FontSize.Small,
+                Controls.FontSize.Middle,
+                Controls.FontSize.Large,
+                Controls.FontSize.XLarge,
+                Controls.FontSize.XXLarge
+            };
+            return new ReadOnlyCollection<FontSize>(ls);
+        } 
 
         private void InitVisualEditor()
         {
             VisualEditor.NavigateToString(WrapHtmlContent(String.Empty));
+
+            FontSizeList.ItemsSource = GetDefaultFontSizes();
+            FontSizeList.SelectionChanged += FontSizeList_SelectionChanged;
             //HtmlDocument.
         }
 
@@ -285,6 +391,21 @@ namespace TAlex.WPF.Controls
         Source
     }
 
+    public class FontSize
+    {
+        public string Key { get; set; }
+        public double Size { get; set; }
+        public string Text { get; set; }
+
+        public static readonly FontSize NO = new FontSize { Size = 0 };
+        public static readonly FontSize XXSmall = new FontSize { Key = "1", Size = 8.5, Text = "8pt" };
+        public static readonly FontSize XSmall = new FontSize { Key = "2", Size = 10.5, Text = "10pt" };
+        public static readonly FontSize Small = new FontSize { Key = "3", Size = 12, Text = "12pt" };
+        public static readonly FontSize Middle = new FontSize { Key = "4", Size = 14, Text = "14pt" };
+        public static readonly FontSize Large = new FontSize { Key = "5", Size = 18, Text = "18pt" };
+        public static readonly FontSize XLarge = new FontSize { Key = "6", Size = 24, Text = "24pt" };
+        public static readonly FontSize XXLarge = new FontSize { Key = "7", Size = 36, Text = "36pt" };
+    }
 
     public static class HtmlEditingCommands
     {
@@ -385,5 +506,27 @@ namespace TAlex.WPF.Controls
         }
 
         #endregion
+    }
+
+    public static class HtmlCommands
+    {
+        public static readonly string FontSize = "FontSize";
+
+        public static readonly string Bold = "Bold";
+        public static readonly string Italic = "Italic";
+        public static readonly string Underline = "Underline";
+        public static readonly string ForeColor = "ForeColor";
+        public static readonly string BackColor = "BackColor";
+        public static readonly string RemoveFormat = "RemoveFormat";
+
+        public static readonly string InsertUnorderedList = "InsertUnorderedList";
+        public static readonly string InsertOrderedList = "InsertOrderedList";
+        public static readonly string Outdent = "Outdent";
+        public static readonly string Indent = "Indent";
+
+        public static readonly string JustifyLeft = "JustifyLeft";
+        public static readonly string JustifyCenter = "JustifyCenter";
+        public static readonly string JustifyRight = "JustifyRight";
+        public static readonly string JustifyFull = "JustifyFull";
     }
 }

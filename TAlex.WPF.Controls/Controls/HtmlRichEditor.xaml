@@ -77,39 +77,43 @@
                     <ComboBox SelectedIndex="0" MinWidth="110">
                         <ComboBoxItem>Segoe UI</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox SelectedIndex="0">
-                        <ComboBoxItem>10pt</ComboBoxItem>
+                    <ComboBox Name="FontSizeList" Width="40">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Text}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </ToolBar>
                 
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <ToggleButton Content="B" FontWeight="Bold" FontSize="14" ToolTip="Bold (Ctrl+B)" Style="{StaticResource ToggleButtonStyle}" Focusable="False" Command="talex:HtmlEditingCommands.ToggleBold" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                    <ToggleButton Content="I" FontStyle="Italic" FontSize="14" ToolTip="Italic (Ctrl+I)" Style="{StaticResource ToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleItalic" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                    <ToggleButton ToolTip="Underline (Ctrl+U)" VerticalContentAlignment="Center" Style="{StaticResource ToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleUnderline" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+                    <ToggleButton Name="ToggleBold" Content="B" FontWeight="Bold" FontSize="14" ToolTip="Bold (Ctrl+B)" Style="{StaticResource ToggleButtonStyle}" Focusable="False" Command="talex:HtmlEditingCommands.ToggleBold" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="ToggleItalic" Content="I" FontStyle="Italic" FontSize="14" ToolTip="Italic (Ctrl+I)" Style="{StaticResource ToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleItalic" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="ToggleUnderline" ToolTip="Underline (Ctrl+U)" VerticalContentAlignment="Center" Style="{StaticResource ToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleUnderline" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
                         <TextBlock TextDecorations="Underline" FontSize="14" VerticalAlignment="Center">
                             U
                         </TextBlock>
                     </ToggleButton>
                     <Grid>
-                        <talex:ColorChip Margin="1,1,0,0" x:Name="FontColorChip" ToolTip="Font color" SelectedColor="Black" BorderThickness="0" />
+                        <talex:ColorChip Margin="1,1,0,0" x:Name="FontColorChip" ToolTip="Font color" SelectedColor="Black" SelectedColorChanged="FontColorChip_SelectedColorChanged" BorderThickness="0" />
                         <Border Background="White" Margin="0,0,0,5" Width="17" IsHitTestVisible="False" />
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Text="A" IsHitTestVisible="False" />
                     </Grid>
                     <Grid>
-                        <talex:ColorChip Margin="1,1,0,0" SelectedColor="Transparent" ToolTip="Font color" BorderBrush="Silver" BorderThickness="1" />
+                        <talex:ColorChip Margin="1,1,0,0" x:Name="BackColorChip" SelectedColor="Transparent" ToolTip="Font color" BorderBrush="Silver" SelectedColorChanged="BackColorChip_SelectedColorChanged" BorderThickness="1" />
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Text="A" IsHitTestVisible="False" />
                     </Grid>
                     <Button Content="" ToolTip="Clear Style" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.ClearStyle" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                 </ToolBar>
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <Button Content="" ToolTip="Align text left" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.JustifyLeft" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                    <Button Content="" ToolTip="Center" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.JustifyCenter" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                    <Button Content="" ToolTip="Align text right" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.JustifyRight" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                    <Button Content="" ToolTip="Justify" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.JustifyFull" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="JustifyLeft" Content="" ToolTip="Align text left" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.JustifyLeft" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="JustifyCenter" Content="" ToolTip="Center" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.JustifyCenter" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="JustifyRight" Content="" ToolTip="Align text right" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.JustifyRight" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="JustifyFull" Content="" ToolTip="Justify" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.JustifyFull" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                 </ToolBar>
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <ToggleButton Content="" ToolTip="Unordered list" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleUnorderedList" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                    <ToggleButton Content="" ToolTip="Ordered list" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleOrderedList" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="ToggleUnorderedList" Content="" ToolTip="Unordered list" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleUnorderedList" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <ToggleButton Name="ToggleOrderedList" Content="" ToolTip="Ordered list" Style="{StaticResource IconicToggleButtonStyle}" Command="talex:HtmlEditingCommands.ToggleOrderedList" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                     <Button Content="" ToolTip="Decrease indent" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.DecreaseIndent" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                     <Button Content="" ToolTip="Increase indent" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.IncreaseIndent" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                 </ToolBar>
