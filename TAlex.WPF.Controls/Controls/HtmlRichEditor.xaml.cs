@@ -14,7 +14,8 @@ using System.Windows.Shapes;
 using mshtml;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
-using TAlex.WPF.Helpers;
+using TAlex.WPF.Media;
+using TAlex.WPF.CommonDialogs;
 
 
 namespace TAlex.WPF.Controls
@@ -66,6 +67,14 @@ namespace TAlex.WPF.Controls
             get
             {
                 return VisualEditor != null ? (IHTMLDocument2)VisualEditor.Document : null;
+            }
+        }
+
+        private bool DocumentIsReady
+        {
+            get
+            {
+                return HtmlDocument != null && HtmlDocument.readyState == "complete";
             }
         }
 
@@ -194,14 +203,52 @@ namespace TAlex.WPF.Controls
         }
 
 
+        private void InsertHyperlink_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (DocumentIsReady)
+            {
+                InsertHyperlinkDialog dialog = new InsertHyperlinkDialog
+                {
+                    Owner = Window.GetWindow(this),
+                    Model = new Models.HyperlinkObject { Text = HtmlDocument.selection.createRange().text }
+                };
+                if (dialog.ShowDialog() == true)
+                {
+                    InsertHtml(dialog.Model.ToHtml());
+                }
+            }
+        }
+
+        private void InsertImage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void InsertTable_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+
         private void EditingCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = HtmlDocument != null && EditMode == EditMode.Visual;
+            e.CanExecute = DocumentIsReady && EditMode == EditMode.Visual;
         }
 
         #endregion
 
         #region Event Handlers
+
+        private void VisualEditor_Navigated(object sender, NavigationEventArgs e)
+        {
+            ((HTMLTextContainerEvents2_Event)HtmlDocument.body).onchange += new HTMLTextContainerEvents2_onchangeEventHandler(b);
+        }
+
+        private void b(IHTMLEventObj obj)
+        {
+            int d = 5;
+            var state = HtmlDocument.readyState;
+        }
 
         private void StyleTimer_Tick(object sender, EventArgs e)
         {
@@ -256,7 +303,7 @@ namespace TAlex.WPF.Controls
         {
             if (e.OldValue != e.NewValue)
             {
-                ExecuteHtmlCommand(HtmlCommands.ForeColor, ColorHelper.ColorToString(e.NewValue));
+                ExecuteHtmlCommand(HtmlCommands.ForeColor, ColorUtilities.ColorToHexString(e.NewValue));
             }
         }
 
@@ -264,7 +311,7 @@ namespace TAlex.WPF.Controls
         {
             if (e.OldValue != e.NewValue)
             {
-                ExecuteHtmlCommand(HtmlCommands.BackColor, ColorHelper.ColorToString(e.NewValue));
+                ExecuteHtmlCommand(HtmlCommands.BackColor, ColorUtilities.ColorToHexString(e.NewValue));
             }
         }
 
@@ -304,24 +351,17 @@ namespace TAlex.WPF.Controls
 
         private void ExecuteHtmlCommand(string command, object value = null)
         {
-            if (HtmlDocument != null) HtmlDocument.execCommand(command, false, value);
+            if (DocumentIsReady) HtmlDocument.execCommand(command, false, value);
         }
 
         private bool GetHtmlCommandState(string command)
         {
-            return (HtmlDocument != null) && HtmlDocument.queryCommandState(command);
+            return DocumentIsReady && HtmlDocument.queryCommandState(command);
         }
 
         private string GetHtmlCommandValue(string command)
         {
-            try
-            {
-                return (HtmlDocument != null) ? HtmlDocument.queryCommandValue(command).ToString() : null;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return DocumentIsReady ? (HtmlDocument.queryCommandValue(command) + String.Empty) : null;
         }
 
         private Color GetHtmlCommandValueAsColor(string command, Color defaultColor)
@@ -330,9 +370,15 @@ namespace TAlex.WPF.Controls
             if (!String.IsNullOrEmpty(value))
             {
                 if (value.StartsWith("#")) return (Color)ColorConverter.ConvertFromString(value);
-                return (Color)ColorConverter.ConvertFromString(String.Format("#FF{0:X6}", ColorHelper.BgrToRgb(int.Parse(value))));
+                return (Color)ColorConverter.ConvertFromString(String.Format("#FF{0:X6}", ColorUtilities.BgrToRgb(int.Parse(value))));
             }
             return defaultColor;
+        }
+
+        private void InsertHtml(string source)
+        {
+            var range = HtmlDocument.selection.createRange() as IHTMLTxtRange;
+            range.pasteHTML(source);
         }
 
 
@@ -375,6 +421,7 @@ namespace TAlex.WPF.Controls
 
         private void InitVisualEditor()
         {
+            VisualEditor.Navigated += VisualEditor_Navigated;
             VisualEditor.NavigateToString(WrapHtmlContent(String.Empty));
 
             FontSizeList.ItemsSource = GetDefaultFontSizes();
@@ -433,8 +480,8 @@ namespace TAlex.WPF.Controls
     {
         #region Fields
 
-        private static readonly RoutedUICommand _toggleEditHtml = new RoutedUICommand();//"Edit Html", "EditHtml", null);
-        private static readonly RoutedUICommand _toggleBold = new RoutedUICommand();//"Bold", "ToggleBold", typeof(HtmlRichEditor));
+        private static readonly RoutedUICommand _toggleEditHtml = new RoutedUICommand();
+        private static readonly RoutedUICommand _toggleBold = new RoutedUICommand();
         private static readonly RoutedUICommand _toggleItalic = new RoutedUICommand();
         private static readonly RoutedUICommand _toggleUnderline = new RoutedUICommand();
         private static readonly RoutedUICommand _clearStyle = new RoutedUICommand();
@@ -449,6 +496,10 @@ namespace TAlex.WPF.Controls
         private static readonly RoutedUICommand _justifyRight = new RoutedUICommand();
         private static readonly RoutedUICommand _justifyFull = new RoutedUICommand();
 
+        private static readonly RoutedUICommand _insertHyperlink = new RoutedUICommand();
+        private static readonly RoutedUICommand _insertImage = new RoutedUICommand();
+        private static readonly RoutedUICommand _insertTable = new RoutedUICommand();
+
         #endregion
 
         #region Properties
@@ -457,6 +508,7 @@ namespace TAlex.WPF.Controls
         {
             get { return _toggleEditHtml; }
         }
+
 
         public static RoutedUICommand ToggleBold
         {
@@ -477,6 +529,7 @@ namespace TAlex.WPF.Controls
         {
             get { return _clearStyle; }
         }
+
 
         public static RoutedUICommand ToggleUnorderedList
         {
@@ -517,6 +570,22 @@ namespace TAlex.WPF.Controls
         public static RoutedUICommand JustifyFull
         {
             get { return _justifyFull; }
+        }
+
+
+        public static RoutedUICommand InsertHyperlink
+        {
+            get { return _insertHyperlink; }
+        }
+
+        public static RoutedUICommand InsertImage
+        {
+            get { return _insertImage; }
+        }
+
+        public static RoutedUICommand InsertTable
+        {
+            get { return _insertTable; }
         }
 
         #endregion

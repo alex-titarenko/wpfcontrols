@@ -57,6 +57,9 @@
         <CommandBinding Command="talex:HtmlEditingCommands.JustifyCenter" Executed="JustifyCenter_Executed" CanExecute="EditingCommand_CanExecute" />
         <CommandBinding Command="talex:HtmlEditingCommands.JustifyRight" Executed="JustifyRight_Executed" CanExecute="EditingCommand_CanExecute" />
         <CommandBinding Command="talex:HtmlEditingCommands.JustifyFull" Executed="JustifyFull_Executed" CanExecute="EditingCommand_CanExecute" />
+        <CommandBinding Command="talex:HtmlEditingCommands.InsertHyperlink" Executed="InsertHyperlink_Executed" CanExecute="EditingCommand_CanExecute" />
+        <CommandBinding Command="talex:HtmlEditingCommands.InsertImage" Executed="InsertImage_Executed" CanExecute="EditingCommand_CanExecute" />
+        <CommandBinding Command="talex:HtmlEditingCommands.InsertTable" Executed="InsertTable_Executed" CanExecute="EditingCommand_CanExecute" />
     </UserControl.CommandBindings>
     
     <Grid>
@@ -117,9 +120,9 @@
                     <Button Content="" ToolTip="Increase indent" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.IncreaseIndent" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                 </ToolBar>
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <Button Content="" ToolTip="Insert Hyperlink" Style="{StaticResource IconicButtonStyle}" />
-                    <Button Content="" ToolTip="Insert Image" Style="{StaticResource IconicButtonStyle}" />
-                    <Button Content="" ToolTip="Insert Table"  Style="{StaticResource IconicButtonStyle}" />
+                    <Button Content="" ToolTip="Insert Hyperlink" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.InsertHyperlink" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <Button Content="" ToolTip="Insert Image" Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.InsertImage" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                    <Button Content="" ToolTip="Insert Table"  Style="{StaticResource IconicButtonStyle}" Command="talex:HtmlEditingCommands.InsertTable" CommandTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                 </ToolBar>
             </ToolBarTray>
             
