@@ -109,7 +109,7 @@ namespace TAlex.WPF.Models
         {
             get
             {
-                return _text;
+                return (!String.IsNullOrEmpty(_text)) ? _text : _url;
             }
 
             set
@@ -136,10 +136,6 @@ namespace TAlex.WPF.Models
                 case "Url":
                     error = ValidateUrl();
                     break;
-
-                case "Text":
-                    error = ValidateText();
-                    break;
             }
 
             return error;
@@ -156,11 +152,119 @@ namespace TAlex.WPF.Models
                 return "Url format is invalid.";
         }
 
-        private string ValidateText()
+        #endregion
+    }
+
+    internal class TableObject : HtmlObject
+    {
+        #region Fields
+
+        private int _rows;
+        private int _columns;
+        private int _width;
+        private string _widthUnit;
+
+        #endregion
+
+        #region Properties
+
+        public int Rows
         {
-            return String.IsNullOrEmpty(Text) ? "Text is empty" : null;
+            get
+            {
+                return _rows;
+            }
+
+            set
+            {
+                _rows = value;
+                OnPropertyChanged("Rows");
+            }
+        }
+
+        public int Columns
+        {
+            get
+            {
+                return _columns;
+            }
+
+            set
+            {
+                _columns = value;
+                OnPropertyChanged("Columns");
+            }
+        }
+
+        public int Width
+        {
+            get
+            {
+                return _width;
+            }
+
+            set
+            {
+                _width = value;
+                OnPropertyChanged("Width");
+            }
+        }
+
+        public string WidthUnit
+        {
+            get
+            {
+                return _widthUnit;
+            }
+
+            set
+            {
+                _widthUnit = value;
+                OnPropertyChanged("WidthUnit");
+            }
         }
 
         #endregion
+
+
+        #region Constructors
+
+        public TableObject()
+        {
+            Rows = 2;
+            Columns = 2;
+            Width = 100;
+            WidthUnit = "%";
+        }
+
+        #endregion
+
+        public override string ToHtml()
+        {
+            int rows = Rows;
+            int cols = Columns;
+            string width = string.Format(" width=\"{0}{1}\"", Width, WidthUnit);
+
+            StringBuilder bx = new StringBuilder();
+            bx.AppendFormat("<table{0}>", width);
+            for (int i = 0; i < rows; i++)
+            {
+                bx.Append("<tr>");
+
+                for (int j = 0; j < cols; j++)
+                {
+                    bx.Append("<td></td>");
+                }
+                bx.Append("</tr>");
+            }
+            bx.Append("</table>");
+
+            return bx.ToString();
+        }
+
+        protected override string ValidateProperty(string propertyName)
+        {
+            return null;
+        }
     }
 }

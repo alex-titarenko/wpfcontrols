@@ -226,7 +226,17 @@ namespace TAlex.WPF.Controls
 
         private void InsertTable_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            if (DocumentIsReady)
+            {
+                InsertTableDialog dialog = new InsertTableDialog
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                if (dialog.ShowDialog() == true)
+                {
+                    InsertHtml(dialog.Model.ToHtml());
+                }
+            }
         }
 
 

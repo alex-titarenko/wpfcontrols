@@ -74,6 +74,9 @@
     <Compile Include="CommonDialogs\InsertHyperlinkDialog.xaml.cs">
       <DependentUpon>InsertHyperlinkDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonDialogs\InsertTableDialog.xaml.cs">
+      <DependentUpon>InsertTableDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BusyIndicator.cs" />
     <Compile Include="Controls\ColorChip.cs" />
     <Compile Include="Controls\ColorComboBox.xaml.cs">
@@ -90,6 +93,7 @@
     <Compile Include="Converters\Int32ToDecimalConverter.cs" />
     <Compile Include="Converters\NotEmptyStringToBooleanConverter.cs" />
     <Compile Include="Converters\IsNotNullToBooleanConverter.cs" />
+    <Compile Include="Converters\WidthUnitToMaxWidthConverter.cs" />
     <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\WPFVisualHelper.cs" />
     <Compile Include="Media\ColorItem.cs" />
@@ -117,6 +121,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="CommonDialogs\InsertHyperlinkDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CommonDialogs\InsertTableDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
