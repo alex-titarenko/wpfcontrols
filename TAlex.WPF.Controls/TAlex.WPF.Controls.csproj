@@ -74,6 +74,9 @@
     <Compile Include="CommonDialogs\InsertHyperlinkDialog.xaml.cs">
       <DependentUpon>InsertHyperlinkDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonDialogs\InsertImageDialog.xaml.cs">
+      <DependentUpon>InsertImageDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommonDialogs\InsertTableDialog.xaml.cs">
       <DependentUpon>InsertTableDialog.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,7 @@
     <Compile Include="Converters\DoubleToStringConverter.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\Int32ToDecimalConverter.cs" />
+    <Compile Include="Converters\Int32ToDoubleConverter.cs" />
     <Compile Include="Converters\NotEmptyStringToBooleanConverter.cs" />
     <Compile Include="Converters\IsNotNullToBooleanConverter.cs" />
     <Compile Include="Converters\WidthUnitToMaxWidthConverter.cs" />
@@ -121,6 +125,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="CommonDialogs\InsertHyperlinkDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CommonDialogs\InsertImageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -207,10 +207,11 @@ namespace TAlex.WPF.Controls
         {
             if (DocumentIsReady)
             {
+                var range = HtmlDocument.selection.createRange() as IHTMLTxtRange;
                 InsertHyperlinkDialog dialog = new InsertHyperlinkDialog
                 {
                     Owner = Window.GetWindow(this),
-                    Model = new Models.HyperlinkObject { Text = HtmlDocument.selection.createRange().text }
+                    Model = new Models.HyperlinkObject { Text = range != null ? range.text : null }
                 };
                 if (dialog.ShowDialog() == true)
                 {
@@ -221,7 +222,17 @@ namespace TAlex.WPF.Controls
 
         private void InsertImage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            if (DocumentIsReady)
+            {
+                InsertImageDialog dialog = new InsertImageDialog
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                if (dialog.ShowDialog() == true)
+                {
+                    InsertHtml(dialog.Model.ToHtml());
+                }
+            }
         }
 
         private void InsertTable_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -388,7 +399,7 @@ namespace TAlex.WPF.Controls
         private void InsertHtml(string source)
         {
             var range = HtmlDocument.selection.createRange() as IHTMLTxtRange;
-            range.pasteHTML(source);
+            if (range != null) range.pasteHTML(source);
         }
 
 
