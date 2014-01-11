@@ -19,12 +19,14 @@
 
         <Grid Height="23">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
                 <ColumnDefinition />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
             
-            <TextBox Text="{Binding Path=Source, UpdateSourceTrigger=PropertyChanged}" KeyDown="SourceTextBox_KeyDown" />
-            <Button Grid.Column="1" HorizontalAlignment="Right" Width="26" Content="..." Click="BrowseImageButton_Click" />
+            <Label VerticalAlignment="Center" Margin="0" Padding="0">Source:</Label>
+            <TextBox Grid.Column="1" Text="{Binding Path=Source, UpdateSourceTrigger=PropertyChanged}" KeyDown="SourceTextBox_KeyDown" />
+            <Button Grid.Column="2" HorizontalAlignment="Right" Width="26" Content="..." Click="BrowseImageButton_Click" />
         </Grid>
             
         <Grid Grid.Row="1">
@@ -103,7 +105,7 @@
         </Grid>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Height="25">
-            <Button MinWidth="80" Margin="0,0,8,0" Content="_Insert" Click="InsertButton_Click" />
+            <Button MinWidth="80" Margin="0,0,8,0" Content="_Insert" IsEnabled="{Binding IsValid}" Click="InsertButton_Click" />
             <Button MinWidth="80" Content="_Cancel" IsCancel="True" />
         </StackPanel>
     </Grid>

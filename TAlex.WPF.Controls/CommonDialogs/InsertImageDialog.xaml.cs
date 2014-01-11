@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TAlex.WPF.Models;
+
 
 namespace TAlex.WPF.CommonDialogs
 {
@@ -80,8 +82,13 @@ namespace TAlex.WPF.CommonDialogs
         {
             BitmapImage image = (BitmapImage)sender;
 
-            Model.OriginalWidth = (int)image.Width;
-            Model.OriginalHeight = (int)image.Height;
+            Model.OriginalWidth = (int)image.PixelWidth;
+            Model.OriginalHeight = (int)image.PixelHeight;
+        }
+
+        private void Image_DownloadFailed(object sender, ExceptionEventArgs e)
+        {
+            SetInvalidState();
         }
 
         #endregion
@@ -90,15 +97,36 @@ namespace TAlex.WPF.CommonDialogs
 
         private void LoadImage()
         {
-            BitmapImage image = new BitmapImage(new Uri(Model.Source, UriKind.RelativeOrAbsolute));
-            image.DownloadCompleted += Image_DownloadCompleted;
-            
+            try
+            {
+                BitmapImage image = new BitmapImage(new Uri(Model.Source, UriKind.RelativeOrAbsolute));
+                image.DownloadCompleted += Image_DownloadCompleted;
+                image.DownloadFailed += Image_DownloadFailed;
 
-            PreviewImage.Source = image;
-            Model.ResizeRate = 100;
+                PreviewImage.Source = image;
+                
+                Model.OriginalWidth = (int)image.PixelWidth;
+                Model.OriginalHeight = (int)image.PixelHeight;
+                Model.ResizeRate = 100;
+                Model.SetValidState();
+            }
+            catch (IOException)
+            {
+                SetInvalidState();
+            }
+            catch (ArgumentNullException)
+            {
+                SetInvalidState();
+            }
+        }
 
-            Model.OriginalWidth = (int)image.Width;
-            Model.OriginalHeight = (int)image.Height;
+        private void SetInvalidState()
+        {
+            PreviewImage.Width = 0;
+            PreviewImage.Height = 0;
+            PreviewImage.Source = null;
+
+            Model.SetInvalidState();
         }
 
         #endregion

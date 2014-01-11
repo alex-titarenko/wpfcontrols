@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
+
 namespace TAlex.WPF.Models
 {
     internal abstract class HtmlObject : INotifyPropertyChanged, IDataErrorInfo
@@ -325,6 +326,19 @@ namespace TAlex.WPF.Models
 
             return String.Format("<img src=\"{0}\" alt=\"{1}\" width=\"{2}\" height=\"{3}\" {4} />",
                 GetSource(), AltText, Width, Height, title);
+        }
+
+        public void SetValidState()
+        {
+            IsValid = true;
+        }
+
+        public void SetInvalidState()
+        {
+            IsValid = false;
+            OriginalHeight = 0;
+            OriginalHeight = 0;
+            ResizeRate = 0;
         }
 
         protected override string ValidateProperty(string propertyName)
