@@ -414,9 +414,15 @@ namespace TAlex.WPF.Controls
         private void UpdateHtmlSource(string source)
         {
             if (EditMode == Controls.EditMode.Visual)
+            {
                 HtmlDocument.body.innerHTML = source;
+            }
             else
+            {
+                CodeEditor.TextChanged -= CodeEditor_TextChanged;
                 CodeEditor.Text = source;
+                CodeEditor.TextChanged += CodeEditor_TextChanged;
+            }
         }
 
         internal void UpdateHtmlSourceProperty()
