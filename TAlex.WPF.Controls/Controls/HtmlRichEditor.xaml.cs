@@ -11,12 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using mshtml;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using TAlex.WPF.Media;
 using TAlex.WPF.CommonDialogs;
-using System.Security.Permissions;
+using mshtml;
 
 
 namespace TAlex.WPF.Controls
@@ -110,7 +109,6 @@ namespace TAlex.WPF.Controls
             InitializeComponent();
             InitVisualEditorEvents();
 
-            VisualEditor.ObjectForScripting = new DocumentChangeHandler(this);
             _styleTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
             _styleTimer.Tick += StyleTimer_Tick;
 
@@ -140,9 +138,13 @@ namespace TAlex.WPF.Controls
             HtmlRichEditor editor = (HtmlRichEditor)sender;
 
             if (!editor._isInternalHtmlSourceChanged)
-                editor.UpdateHtmlSource((string)e.NewValue);
+            {
+                if (e.OldValue != e.NewValue) editor.UpdateHtmlSource((string)e.NewValue);
+            }
             else
+            {
                 editor._isInternalHtmlSourceChanged = false;
+            }
         }
 
         private static void OnStyleSheetChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -307,7 +309,7 @@ namespace TAlex.WPF.Controls
 
         private void CodeEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateHtmlSourceProperty();
+            InternalUpdateHtmlSourceProperty();
         }
 
         private void VisualEditor_LoadCompleted(object sender, NavigationEventArgs e)
@@ -344,6 +346,9 @@ namespace TAlex.WPF.Controls
             BackColorChip.SelectedColorChanged -= BackColorChip_SelectedColorChanged;
             BackColorChip.SelectedColor = GetHtmlCommandValueAsColor(HtmlCommands.BackColor, Colors.Transparent);
             BackColorChip.SelectedColorChanged += BackColorChip_SelectedColorChanged;
+
+            if (EditMode == Controls.EditMode.Visual)
+                InternalUpdateHtmlSourceProperty();
         }
 
         private void FontSizeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -425,10 +430,11 @@ namespace TAlex.WPF.Controls
             }
         }
 
-        internal void UpdateHtmlSourceProperty()
+        internal void InternalUpdateHtmlSourceProperty()
         {
             _isInternalHtmlSourceChanged = true;
             HtmlSource = (EditMode == Controls.EditMode.Visual) ? HtmlDocument.body.innerHTML : CodeEditor.Text;
+            _isInternalHtmlSourceChanged = false;
         }
 
         private void SetNewStyleSheet(string styleSheet)
@@ -447,7 +453,10 @@ namespace TAlex.WPF.Controls
 
         private void ExecuteHtmlCommand(string command, object value = null)
         {
-            if (DocumentIsReady) HtmlDocument.execCommand(command, false, value);
+            if (DocumentIsReady)
+            {
+                HtmlDocument.execCommand(command, false, value);
+            }
         }
 
         private bool GetHtmlCommandState(string command)
@@ -475,7 +484,6 @@ namespace TAlex.WPF.Controls
         {
             var range = HtmlDocument.selection.createRange() as IHTMLTxtRange;
             if (range != null) range.pasteHTML(source);
-            VisualEditor.Focus();
         }
 
 
@@ -542,38 +550,12 @@ namespace TAlex.WPF.Controls
                         <!-- Custom style sheet -->
                         <style type='text/css'>{1}</style>
                     </head>
-                    <body onkeyup=""window.external.OnDocumentChanged()""
-                          onpaste=""window.external.OnDocumentChanged()""
-                          oncut=""window.external.OnDocumentChanged()""
-                          onblur=""window.external.OnDocumentChanged()""  contenteditable>{0}</body>
+                    <body contenteditable>{0}</body>
                 </html>",
                 source, styles);
         }
 
         #endregion
-
-        #endregion
-
-        #region Nested Types
-
-        [System.Runtime.InteropServices.ComVisibleAttribute(true)]
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public class DocumentChangeHandler
-        {
-            private HtmlRichEditor _control;
-
-
-            public DocumentChangeHandler(HtmlRichEditor control)
-            {
-                _control = control;
-            }
-
-
-            public void OnDocumentChanged()
-            {
-                _control.UpdateHtmlSourceProperty();
-            }
-        }
 
         #endregion
     }

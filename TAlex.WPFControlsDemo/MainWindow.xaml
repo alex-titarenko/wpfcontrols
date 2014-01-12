@@ -100,7 +100,7 @@
             
             <TabItem Header="HtmlRichEditor">
                 <Grid>
-                    <talex:HtmlRichEditor />
+                    <talex:HtmlRichEditor StyleSheet="span {{ color: red; }}" />
                 </Grid>
             </TabItem>
             
