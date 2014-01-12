@@ -77,9 +77,9 @@
                 </ToolBar>
 
                 <ToolBar Style="{StaticResource TooBarStyle}">
-                    <ComboBox Name="FontFamilyList" Width="110" />
+                    <ComboBox Name="FontFamilyList" Width="110" Focusable="False" />
 
-                    <ComboBox Name="FontSizeList" Width="40">
+                    <ComboBox Name="FontSizeList" Width="40" Focusable="False">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Text}" />

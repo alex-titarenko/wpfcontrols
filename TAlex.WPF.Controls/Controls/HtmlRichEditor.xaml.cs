@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using TAlex.WPF.Media;
 using TAlex.WPF.CommonDialogs;
+using System.Security.Permissions;
 
 
 namespace TAlex.WPF.Controls
@@ -32,6 +33,7 @@ namespace TAlex.WPF.Controls
         public static readonly DependencyProperty EditModeProperty;
 
         private DispatcherTimer _styleTimer;
+        private bool _isInternalHtmlSourceChanged;
 
         #endregion
 
@@ -108,11 +110,13 @@ namespace TAlex.WPF.Controls
             InitializeComponent();
             InitVisualEditorEvents();
 
+            VisualEditor.ObjectForScripting = new DocumentChangeHandler(this);
             _styleTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
             _styleTimer.Tick += StyleTimer_Tick;
 
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            CodeEditor.TextChanged += CodeEditor_TextChanged;
         }
 
         #endregion
@@ -134,10 +138,11 @@ namespace TAlex.WPF.Controls
         private static void OnHtmlSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             HtmlRichEditor editor = (HtmlRichEditor)sender;
-            //if (e.OldValue != e.NewValue)
-            {
+
+            if (!editor._isInternalHtmlSourceChanged)
                 editor.UpdateHtmlSource((string)e.NewValue);
-            }
+            else
+                editor._isInternalHtmlSourceChanged = false;
         }
 
         private static void OnStyleSheetChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -300,38 +305,14 @@ namespace TAlex.WPF.Controls
             _styleTimer.Stop();
         }
 
+        private void CodeEditor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateHtmlSourceProperty();
+        }
+
         private void VisualEditor_LoadCompleted(object sender, NavigationEventArgs e)
         {
             OnDocumentReady();
-
-            HTMLTextContainerEvents2_Event bodyEvent = HtmlDocument.body as HTMLTextContainerEvents2_Event;
-            //bodyEvent.onchange += OnBodyChangeEventHandler;
-
-            //bodyEvent.onkeyup -= OnBodyChangeEventHandler;
-            bodyEvent.onkeyup += OnBodyChangeEventHandler;
-            //bodyEvent.onblur -= OnBodyChangeEventHandler;
-            //bodyEvent.onblur += OnBodyChangeEventHandler;
-            //bodyEvent.oncut -= new HTMLTextContainerEvents2_oncutEventHandler(OnBodyChangeEventHanlder2);
-            //bodyEvent.oncut += new HTMLTextContainerEvents2_oncutEventHandler(OnBodyChangeEventHanlder2);
-            //bodyEvent.onpaste -= new HTMLTextContainerEvents2_onpasteEventHandler(OnBodyChangeEventHanlder2);
-            //bodyEvent.onpaste += new HTMLTextContainerEvents2_onpasteEventHandler(OnBodyChangeEventHanlder2);
-        }
-
-        private bool OnBodyChangeEventHanlder2(IHTMLEventObj pEvtObj)
-        {
-            UpdateHtmlSource();
-            return true;
-        }
-
-        private void OnBodyChangeEventHandler(IHTMLEventObj obj)
-        {
-            UpdateHtmlSource();
-        }
-
-        private void UpdateHtmlSource()
-        {
-            //HtmlSource = HtmlDocument.body.innerHTML;
-            //SetValue()
         }
 
         private void StyleTimer_Tick(object sender, EventArgs e)
@@ -438,6 +419,12 @@ namespace TAlex.WPF.Controls
                 CodeEditor.Text = source;
         }
 
+        internal void UpdateHtmlSourceProperty()
+        {
+            _isInternalHtmlSourceChanged = true;
+            HtmlSource = (EditMode == Controls.EditMode.Visual) ? HtmlDocument.body.innerHTML : CodeEditor.Text;
+        }
+
         private void SetNewStyleSheet(string styleSheet)
         {
             if (DocumentIsReady)
@@ -482,6 +469,7 @@ namespace TAlex.WPF.Controls
         {
             var range = HtmlDocument.selection.createRange() as IHTMLTxtRange;
             if (range != null) range.pasteHTML(source);
+            VisualEditor.Focus();
         }
 
 
@@ -548,12 +536,38 @@ namespace TAlex.WPF.Controls
                         <!-- Custom style sheet -->
                         <style type='text/css'>{1}</style>
                     </head>
-                    <body contenteditable>{0}</body>
+                    <body onkeyup=""window.external.OnDocumentChanged()""
+                          onpaste=""window.external.OnDocumentChanged()""
+                          oncut=""window.external.OnDocumentChanged()""
+                          onblur=""window.external.OnDocumentChanged()""  contenteditable>{0}</body>
                 </html>",
                 source, styles);
         }
 
         #endregion
+
+        #endregion
+
+        #region Nested Types
+
+        [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        public class DocumentChangeHandler
+        {
+            private HtmlRichEditor _control;
+
+
+            public DocumentChangeHandler(HtmlRichEditor control)
+            {
+                _control = control;
+            }
+
+
+            public void OnDocumentChanged()
+            {
+                _control.UpdateHtmlSourceProperty();
+            }
+        }
 
         #endregion
     }
