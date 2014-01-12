@@ -28,6 +28,7 @@ namespace TAlex.WPF.Controls
         #region Fields
 
         public static readonly DependencyProperty HtmlSourceProperty;
+        public static readonly DependencyProperty StyleSheetProperty;
         public static readonly DependencyProperty EditModeProperty;
 
         private DispatcherTimer _styleTimer;
@@ -49,6 +50,19 @@ namespace TAlex.WPF.Controls
             }
         }
 
+        public string StyleSheet
+        {
+            get
+            {
+                return (string)GetValue(StyleSheetProperty);
+            }
+
+            set
+            {
+                SetValue(StyleSheetProperty, value);
+            }
+        }
+
         public EditMode EditMode
         {
             get
@@ -62,19 +76,19 @@ namespace TAlex.WPF.Controls
             }
         }
 
+        public bool DocumentIsReady
+        {
+            get
+            {
+                return HtmlDocument != null && HtmlDocument.readyState == "complete";
+            }
+        }
+
         private IHTMLDocument2 HtmlDocument
         {
             get
             {
                 return VisualEditor != null ? (IHTMLDocument2)VisualEditor.Document : null;
-            }
-        }
-
-        private bool DocumentIsReady
-        {
-            get
-            {
-                return HtmlDocument != null && HtmlDocument.readyState == "complete";
             }
         }
 
@@ -86,16 +100,19 @@ namespace TAlex.WPF.Controls
         {
             EditModeProperty = DependencyProperty.Register("EditMode", typeof(EditMode), typeof(HtmlRichEditor), new FrameworkPropertyMetadata(EditMode.Visual, new PropertyChangedCallback(OnEditModeChanged)));
             HtmlSourceProperty = DependencyProperty.Register("HtmlSource", typeof(string), typeof(HtmlRichEditor), new FrameworkPropertyMetadata(String.Empty, new PropertyChangedCallback(OnHtmlSourceChanged)));
+            StyleSheetProperty = DependencyProperty.Register("StyleSheet", typeof(string), typeof(HtmlRichEditor), new FrameworkPropertyMetadata(String.Empty, new PropertyChangedCallback(OnStyleSheetChanged)));
         }
 
         public HtmlRichEditor()
         {
             InitializeComponent();
-            InitVisualEditor();
+            InitVisualEditorEvents();
 
             _styleTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
             _styleTimer.Tick += StyleTimer_Tick;
-            _styleTimer.Start();
+
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
         }
 
         #endregion
@@ -117,7 +134,16 @@ namespace TAlex.WPF.Controls
         private static void OnHtmlSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             HtmlRichEditor editor = (HtmlRichEditor)sender;
-            editor.UpdateHtmlSource((string)e.NewValue);
+            //if (e.OldValue != e.NewValue)
+            {
+                editor.UpdateHtmlSource((string)e.NewValue);
+            }
+        }
+
+        private static void OnStyleSheetChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            HtmlRichEditor editor = (HtmlRichEditor)sender;
+            editor.SetNewStyleSheet((string)e.NewValue);
         }
 
         #endregion
@@ -260,15 +286,52 @@ namespace TAlex.WPF.Controls
 
         #region Event Handlers
 
-        private void VisualEditor_Navigated(object sender, NavigationEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ((HTMLTextContainerEvents2_Event)HtmlDocument.body).onchange += new HTMLTextContainerEvents2_onchangeEventHandler(b);
+            if (!DocumentIsReady)
+            {
+                VisualEditor.NavigateToString(WrapHtmlContent(HtmlSource, StyleSheet));
+            }
+            _styleTimer.Start();
         }
 
-        private void b(IHTMLEventObj obj)
+        private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            int d = 5;
-            var state = HtmlDocument.readyState;
+            _styleTimer.Stop();
+        }
+
+        private void VisualEditor_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            OnDocumentReady();
+
+            HTMLTextContainerEvents2_Event bodyEvent = HtmlDocument.body as HTMLTextContainerEvents2_Event;
+            //bodyEvent.onchange += OnBodyChangeEventHandler;
+
+            //bodyEvent.onkeyup -= OnBodyChangeEventHandler;
+            bodyEvent.onkeyup += OnBodyChangeEventHandler;
+            //bodyEvent.onblur -= OnBodyChangeEventHandler;
+            //bodyEvent.onblur += OnBodyChangeEventHandler;
+            //bodyEvent.oncut -= new HTMLTextContainerEvents2_oncutEventHandler(OnBodyChangeEventHanlder2);
+            //bodyEvent.oncut += new HTMLTextContainerEvents2_oncutEventHandler(OnBodyChangeEventHanlder2);
+            //bodyEvent.onpaste -= new HTMLTextContainerEvents2_onpasteEventHandler(OnBodyChangeEventHanlder2);
+            //bodyEvent.onpaste += new HTMLTextContainerEvents2_onpasteEventHandler(OnBodyChangeEventHanlder2);
+        }
+
+        private bool OnBodyChangeEventHanlder2(IHTMLEventObj pEvtObj)
+        {
+            UpdateHtmlSource();
+            return true;
+        }
+
+        private void OnBodyChangeEventHandler(IHTMLEventObj obj)
+        {
+            UpdateHtmlSource();
+        }
+
+        private void UpdateHtmlSource()
+        {
+            //HtmlSource = HtmlDocument.body.innerHTML;
+            //SetValue()
         }
 
         private void StyleTimer_Tick(object sender, EventArgs e)
@@ -340,6 +403,11 @@ namespace TAlex.WPF.Controls
 
         #region Helpers
 
+        protected virtual void OnDocumentReady()
+        {
+            SetNewStyleSheet(StyleSheet);
+        }
+
         private void SetVisualMode()
         {
             if (EditMode == Controls.EditMode.Visual)
@@ -368,6 +436,20 @@ namespace TAlex.WPF.Controls
                 HtmlDocument.body.innerHTML = source;
             else
                 CodeEditor.Text = source;
+        }
+
+        private void SetNewStyleSheet(string styleSheet)
+        {
+            if (DocumentIsReady)
+            {
+                var styleSheets = HtmlDocument.styleSheets.Cast<IHTMLStyleSheet>().ToList();
+
+                if (styleSheets.Count == 2)
+                {
+                    var customStyleSheet = styleSheets[1];
+                    customStyleSheet.cssText = styleSheet;
+                }
+            }
         }
 
         private void ExecuteHtmlCommand(string command, object value = null)
@@ -440,11 +522,10 @@ namespace TAlex.WPF.Controls
             return new ReadOnlyCollection<FontSize>(ls);
         } 
 
-        private void InitVisualEditor()
+        private void InitVisualEditorEvents()
         {
-            VisualEditor.Navigated += VisualEditor_Navigated;
-            VisualEditor.NavigateToString(WrapHtmlContent(String.Empty));
-
+            VisualEditor.LoadCompleted += VisualEditor_LoadCompleted;
+            
             FontSizeList.ItemsSource = GetDefaultFontSizes();
             FontSizeList.SelectionChanged += FontSizeList_SelectionChanged;
 
@@ -459,10 +540,13 @@ namespace TAlex.WPF.Controls
                     <head>
                         <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 
+                        <!-- Default style sheet -->
                         <style type='text/css'>
                             body {{ font: 14px verdana; color: #505050; background: #fcfcfc; }}
-                            {1}
+                            table, td, th, tr {{ border: 1px solid black; border-collapse: collapse; }}
                         </style>
+                        <!-- Custom style sheet -->
+                        <style type='text/css'>{1}</style>
                     </head>
                     <body contenteditable>{0}</body>
                 </html>",
