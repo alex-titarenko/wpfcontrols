@@ -432,9 +432,15 @@ namespace TAlex.WPF.Controls
 
         internal void InternalUpdateHtmlSourceProperty()
         {
-            _isInternalHtmlSourceChanged = true;
-            HtmlSource = (EditMode == Controls.EditMode.Visual) ? HtmlDocument.body.innerHTML : CodeEditor.Text;
-            _isInternalHtmlSourceChanged = false;
+            if (DocumentIsReady)
+            {
+                _isInternalHtmlSourceChanged = true;
+
+                string newContent = (EditMode == Controls.EditMode.Visual) ? HtmlDocument.body.innerHTML : CodeEditor.Text;
+                if (HtmlSource != newContent) HtmlSource = newContent;
+
+                _isInternalHtmlSourceChanged = false;
+            }
         }
 
         private void SetNewStyleSheet(string styleSheet)
