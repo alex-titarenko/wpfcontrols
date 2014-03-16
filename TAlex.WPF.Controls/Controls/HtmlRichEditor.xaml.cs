@@ -550,7 +550,7 @@ namespace TAlex.WPF.Controls
 
                         <!-- Default style sheet -->
                         <style type='text/css'>
-                            body {{ font: 14px verdana; color: #505050; background: #fcfcfc; }}
+                            body {{ font: 10pt verdana; color: #505050; background: #fcfcfc; }}
                             table, td, th, tr {{ border: 1px solid black; border-collapse: collapse; }}
                         </style>
                         <!-- Custom style sheet -->
