@@ -270,28 +270,28 @@ namespace TAlex.WPF.Controls
             InitializeCommands();
 
             ValueProperty = DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDown),
-                new FrameworkPropertyMetadata(DefaultMinimum, new PropertyChangedCallback(OnValueChanged), new CoerceValueCallback(CoerceValue)));
+                new FrameworkPropertyMetadata(DefaultMinimum, OnValueChanged, CoerceValue));
 
             MinimumProperty = DependencyProperty.Register("Minimum", typeof(decimal), typeof(NumericUpDown),
-                new FrameworkPropertyMetadata(DefaultMinimum, new PropertyChangedCallback(OnMinimumChanged), new CoerceValueCallback(CoerceMinimum)));
+                new FrameworkPropertyMetadata(DefaultMinimum, OnMinimumChanged, CoerceMinimum));
 
             MaximumProperty = DependencyProperty.Register("Maximum", typeof(decimal), typeof(NumericUpDown),
-                new FrameworkPropertyMetadata(DefaultMaximum, new PropertyChangedCallback(OnMaximumChanged), new CoerceValueCallback(CoerceMaximum)));
+                new FrameworkPropertyMetadata(DefaultMaximum, OnMaximumChanged, CoerceMaximum));
 
             IncrementProperty = DependencyProperty.Register("Increment", typeof(decimal), typeof(NumericUpDown),
-                new FrameworkPropertyMetadata(DefaultIncrement, new PropertyChangedCallback(OnIncrementChanged), new CoerceValueCallback(CoerceIncrement)), new ValidateValueCallback(ValidateIncrement));
+                new FrameworkPropertyMetadata(DefaultIncrement, OnIncrementChanged, CoerceIncrement), ValidateIncrement);
 
             DecimalPlacesProperty = DependencyProperty.Register("DecimalPlaces", typeof(int), typeof(NumericUpDown),
-                new FrameworkPropertyMetadata(DefaultDecimalPlaces, new PropertyChangedCallback(OnDecimalPlacesChanged)), new ValidateValueCallback(ValidateDecimalPlaces));
+                new FrameworkPropertyMetadata(DefaultDecimalPlaces, OnDecimalPlacesChanged), ValidateDecimalPlaces);
 
             InterceptArrowKeysProperty = DependencyProperty.Register("InterceptArrowKeys", typeof(bool), typeof(NumericUpDown),
                 new FrameworkPropertyMetadata(true));
 
             IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(NumericUpDown),
-                new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsReadOnlyChanged)));
+                new FrameworkPropertyMetadata(false, OnIsReadOnlyChanged));
 
             NumberFormatInfoProperty = DependencyProperty.Register("NumberFormatInfo", typeof(NumberFormatInfo), typeof(NumericUpDown),
-                new FrameworkPropertyMetadata(NumberFormatInfo.CurrentInfo.Clone(), new PropertyChangedCallback(OnNumberFormatInfoChanged)));
+                new FrameworkPropertyMetadata(NumberFormatInfo.CurrentInfo.Clone(), OnNumberFormatInfoChanged));
 
 
             ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble,
@@ -389,7 +389,7 @@ namespace TAlex.WPF.Controls
 
             newValue = Math.Max(control.Minimum, Math.Min(control.Maximum, newValue));
             newValue = Decimal.Round(newValue, control.DecimalPlaces);
-
+            
             return newValue;
         }
 
@@ -709,7 +709,7 @@ namespace TAlex.WPF.Controls
         {
             if (_inputValue != Value)
             {
-                Value = _inputValue;
+                Value = (decimal)CoerceValue(this, _inputValue);
             }
         }
 
