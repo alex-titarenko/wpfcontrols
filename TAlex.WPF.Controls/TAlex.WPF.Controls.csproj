@@ -122,6 +122,9 @@
     <Compile Include="Services\PushBinding\PushBinding.cs" />
     <Compile Include="Services\PushBinding\PushBindingCollection.cs" />
     <Compile Include="Services\PushBinding\PushBindingManager.cs" />
+    <Compile Include="Theming\IThemeManager.cs" />
+    <Compile Include="Theming\ThemeInfo.cs" />
+    <Compile Include="Theming\ThemeLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="CommonDialogs\InsertHyperlinkDialog.xaml">
@@ -218,6 +221,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir).nuget\nuget.exe pack "$(ProjectPath)" -Prop Configuration=$(ConfigurationName)</PostBuildEvent>
