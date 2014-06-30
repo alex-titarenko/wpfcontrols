@@ -121,7 +121,7 @@ namespace TAlex.WPF.Controls
             {
                 string newImageUri = NewImageUri(GetSourceUrl(), CurrentFrameIndex + 1);
 
-                if (Assembly.GetExecutingAssembly().GetManifestResourceNames().Contains(newImageUri))
+                if (CheckImageExisting(newImageUri))
                     CurrentFrameIndex++;
                 else
                     CurrentFrameIndex = 0;
@@ -198,6 +198,19 @@ namespace TAlex.WPF.Controls
                 }
             }
             return null;
+        }
+
+        private bool CheckImageExisting(string uri)
+        {
+            try
+            {
+                new BitmapImage(new Uri(uri));
+                return true;
+            }
+            catch (IOException)
+            {
+                return false;
+            }
         }
 
         private string GetSourceUrl()
