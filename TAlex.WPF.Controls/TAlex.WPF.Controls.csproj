@@ -88,6 +88,7 @@
     <Compile Include="Controls\HtmlRichEditor.xaml.cs">
       <DependentUpon>HtmlRichEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ImageEx.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\CamelTextToRegularTextConverter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
