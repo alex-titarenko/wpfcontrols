@@ -166,7 +166,7 @@ namespace TAlex.WPF.Controls
 
         private string NewImageUri(string uri, int frameIdx)
         {
-            return ThemeNameAndFrameRegex.Replace(uri, String.Format(".{0}${{ext}}", frameIdx));
+            return FrameRegex.Replace(uri, String.Format(".{0}${{ext}}", frameIdx));
         }
 
         private string NewImageUri(string uri, string newTheme, int frameIndex)
