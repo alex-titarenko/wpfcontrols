@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -60,10 +61,6 @@ namespace TAlex.WPF.Controls
             }
         }
 
-        public int FirstFrameIndex { get; set; }
-
-        public int LastFrameIndex { get; set; }
-
         public int CurrentFrameIndex { get; private set; }
 
         public double FramesPerSecond
@@ -114,15 +111,22 @@ namespace TAlex.WPF.Controls
                 return;
             }
 
-            var uri = Source.ToString();
-            source = NewImageSource(uri) ?? source;
-
+            source = NewImageSource(GetSourceUrl()) ?? source;
             dc.DrawImage(source, new Rect(new Point(), RenderSize));
         }
 
         protected virtual void OnFrameTimerTick(object sender, EventArgs e)
         {
-            CurrentFrameIndex = (CurrentFrameIndex + 1) > LastFrameIndex ? FirstFrameIndex : CurrentFrameIndex + 1;
+            if (Source != null)
+            {
+                string newImageUri = NewImageUri(GetSourceUrl(), CurrentFrameIndex + 1);
+
+                if (Assembly.GetExecutingAssembly().GetManifestResourceNames().Contains(newImageUri))
+                    CurrentFrameIndex++;
+                else
+                    CurrentFrameIndex = 0;
+            }
+
             InvalidateVisual();
         }
 
@@ -151,6 +155,7 @@ namespace TAlex.WPF.Controls
         public void StopAnimation()
         {
             FrameTimer.Stop();
+            CurrentFrameIndex = 0;
         }
 
 
@@ -164,9 +169,9 @@ namespace TAlex.WPF.Controls
             return ThemeNameAndFrameRegex.Replace(uri, String.Format(".{0}${{ext}}", frameIdx));
         }
 
-        private string NewImageUri(string uri, string newTheme, int frameIdx)
+        private string NewImageUri(string uri, string newTheme, int frameIndex)
         {
-            return ThemeNameAndFrameRegex.Replace(uri, String.Format(".{0}.{1}${{ext}}", ThemeManager.AvailableThemes.Single(x => x.Name == newTheme).FamilyName, frameIdx));
+            return ThemeNameAndFrameRegex.Replace(uri, String.Format(".{0}.{1}${{ext}}", ThemeManager.AvailableThemes.Single(x => x.Name == newTheme).FamilyName, frameIndex));
         }
 
         private ImageSource NewImageSource(string uri)
@@ -193,6 +198,11 @@ namespace TAlex.WPF.Controls
                 }
             }
             return null;
+        }
+
+        private string GetSourceUrl()
+        {
+            return Source.ToString();
         }
 
         #endregion
