@@ -7,7 +7,7 @@ using System.Windows.Media;
 using TAlex.WPF.Media;
 
 
-namespace TAlex.WPF.Test
+namespace TAlex.WPF.Controls.Test.Media
 {
     [TestClass]
     public class ColorUtilitiesTest

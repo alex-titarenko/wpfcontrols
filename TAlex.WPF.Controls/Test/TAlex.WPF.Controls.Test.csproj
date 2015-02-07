@@ -9,7 +9,7 @@
     <ProjectGuid>{5C7DD595-69C7-4C79-BAC1-7ADB7B369C10}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TAlex.WPF.Test</RootNamespace>
+    <RootNamespace>TAlex.WPF.Controls.Test</RootNamespace>
     <AssemblyName>TAlex.WPF.Controls.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,16 +49,16 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BooleanToVisibilityConverterTest.cs" />
-    <Compile Include="CamelTextToRegularTextConverterTest.cs" />
-    <Compile Include="ColorToBrushConverterTest.cs" />
-    <Compile Include="ColorUtilitiesTest.cs" />
-    <Compile Include="DoubleToStringConverterTest.cs" />
-    <Compile Include="IntToDecimalConverterTest.cs" />
-    <Compile Include="NotEmptyStringToBoolConverterTest.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverterTest.cs" />
+    <Compile Include="Converters\CamelTextToRegularTextConverterTest.cs" />
+    <Compile Include="Converters\ColorToBrushConverterTest.cs" />
+    <Compile Include="Media\ColorUtilitiesTest.cs" />
+    <Compile Include="Converters\DoubleToStringConverterTest.cs" />
+    <Compile Include="Converters\IntToDecimalConverterTest.cs" />
+    <Compile Include="Converters\NotEmptyStringToBoolConverterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IsNotNullToBoolConverterTest.cs" />
-    <Compile Include="WPFVisualHelperTest.cs" />
+    <Compile Include="Converters\IsNotNullToBoolConverterTest.cs" />
+    <Compile Include="Helpers\WPFVisualHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAlex.WPF.Controls.csproj">

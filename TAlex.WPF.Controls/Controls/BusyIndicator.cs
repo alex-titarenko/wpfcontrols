@@ -22,9 +22,6 @@ namespace TAlex.WPF.Controls
     {
         #region Fields
 
-        /// <summary>
-        /// Timer used to delay the initial display and avoid flickering.
-        /// </summary>
         private DispatcherTimer _displayAfterTimer = new DispatcherTimer();
 
         public static readonly DependencyProperty IsBusyProperty;
@@ -40,7 +37,6 @@ namespace TAlex.WPF.Controls
 
         static BusyIndicator()
         {
-            // Register dependency properties
             IsBusyProperty = DependencyProperty.Register("IsBusy", typeof(bool), typeof(BusyIndicator), new PropertyMetadata(false, new PropertyChangedCallback(OnIsBusyChanged)));
             BusyContentProperty = DependencyProperty.Register("BusyContent", typeof(object), typeof(BusyIndicator), new PropertyMetadata(null));
             BusyContentTemplateProperty = DependencyProperty.Register("BusyContentTemplate", typeof(DataTemplate), typeof(BusyIndicator), new PropertyMetadata(null));

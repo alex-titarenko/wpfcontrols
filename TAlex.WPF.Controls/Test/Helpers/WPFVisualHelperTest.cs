@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using TAlex.WPF.Helpers;
 
 
-namespace TAlex.WPF.Test
+namespace TAlex.WPF.Controls.Test.Helpers
 {
     [TestClass]
     public class WPFVisualHelperTest

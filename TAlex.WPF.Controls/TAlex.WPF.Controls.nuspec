@@ -7,12 +7,12 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <!--<licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>-->
-    <projectUrl>https://bitbucket.org/t_alex/talex.wpf.controls</projectUrl>
+    <projectUrl>https://github.com/T-Alex/WPFControls</projectUrl>
     <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Reconfigured to release version.</releaseNotes>
-    <copyright>Copyright 2012 T-Alex Software</copyright>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2015 T-Alex Software</copyright>
     <tags>Controls WPF ColorPicker NumericUpDown Converters</tags>
   </metadata>
 </package>

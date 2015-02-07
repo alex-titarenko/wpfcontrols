@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TAlex.WPF.Converters;
 
 
-namespace TAlex.WPF.Test
+namespace TAlex.WPF.Controls.Test.Converters
 {
     [TestClass]
     public class IntToDecimalConverterTest
