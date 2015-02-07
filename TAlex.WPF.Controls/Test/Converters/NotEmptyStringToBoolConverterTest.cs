@@ -2,17 +2,18 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TAlex.WPF.Converters;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Converters
 {
-    [TestClass]
+    [TestFixture]
     public class NotEmptyStringToBoolConverterTest
     {
-        [TestMethod]
+        #region Convert
+
+        [Test]
         public void ConvertTest_Text()
         {
             NotEmptyStringToBooleanConverter target = new NotEmptyStringToBooleanConverter();
@@ -23,7 +24,7 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_WhiteSpaces()
         {
             NotEmptyStringToBooleanConverter target = new NotEmptyStringToBooleanConverter();
@@ -40,7 +41,7 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_IsReversed()
         {
             NotEmptyStringToBooleanConverter target = new NotEmptyStringToBooleanConverter();
@@ -54,5 +55,7 @@ namespace TAlex.WPF.Controls.Test.Converters
             actual = (bool)target.Convert("Universe", typeof(bool), null, null);
             Assert.AreEqual(expected, actual);
         }
+
+        #endregion
     }
 }

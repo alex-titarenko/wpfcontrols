@@ -2,9 +2,8 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TAlex.WPF.Converters;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Converters
@@ -12,10 +11,12 @@ namespace TAlex.WPF.Controls.Test.Converters
     /// <summary>
     /// Summary description for NotNullToBoolConverter
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class IsNotNullToBoolConverterTest
     {
-        [TestMethod]
+        #region Convert
+
+        [Test]
         public void ConvertTest_NotNull()
         {
             IsNotNullToBooleanConverter target = new IsNotNullToBooleanConverter();
@@ -25,7 +26,7 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_Null()
         {
             IsNotNullToBooleanConverter target = new IsNotNullToBooleanConverter();
@@ -35,7 +36,7 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_IsReversed()
         {
             IsNotNullToBooleanConverter target = new IsNotNullToBooleanConverter();
@@ -49,5 +50,7 @@ namespace TAlex.WPF.Controls.Test.Converters
             actual = (bool)target.Convert(5, typeof(Boolean), null, null);
             Assert.AreEqual(expected, actual);
         }
+
+        #endregion
     }
 }

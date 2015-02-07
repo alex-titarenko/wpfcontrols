@@ -3,84 +3,109 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TAlex.WPF.Converters;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Converters
 {
-    [TestClass]
+    [TestFixture]
     public class BooleanToVisibilityConverterTest
     {
-        [TestMethod]
+        protected BooleanToVisibilityConverter Target;
+
+        [SetUp]
+        public void SetUp()
+        {
+            Target = new BooleanToVisibilityConverter();
+        }
+
+
+        #region Convert
+
+        [Test]
         public void ConvertTest_Null()
         {
-            BooleanToVisibilityConverter target = new BooleanToVisibilityConverter();
-
+            //arrange
             Visibility expected = Visibility.Collapsed;
-            Visibility actual = (Visibility)target.Convert((bool?)null, typeof(Visibility), null, null);
+
+            //action
+            Visibility actual = (Visibility)Target.Convert((bool?)null, typeof(Visibility), null, null);
             
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_True()
         {
-            BooleanToVisibilityConverter target = new BooleanToVisibilityConverter();
-
+            //arrange
             Visibility expected = Visibility.Visible;
-            Visibility actual = (Visibility)target.Convert(true, typeof(Visibility), null, null);
+
+            //action
+            Visibility actual = (Visibility)Target.Convert(true, typeof(Visibility), null, null);
             
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_FalseCollapsed()
         {
-            BooleanToVisibilityConverter target = new BooleanToVisibilityConverter();
-
+            //arrange
             Visibility expected = Visibility.Collapsed;
-            Visibility actual = (Visibility)target.Convert(false, typeof(Visibility), null, null);
 
+            //action
+            Visibility actual = (Visibility)Target.Convert(false, typeof(Visibility), null, null);
+
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_FalseHidden()
         {
-            BooleanToVisibilityConverter target = new BooleanToVisibilityConverter();
-            target.UseHidden = true;
-
+            //arrange
+            Target.UseHidden = true;
             Visibility expected = Visibility.Hidden;
-            Visibility actual = (Visibility)target.Convert(false, typeof(Visibility), null, null);
 
+            //action
+            Visibility actual = (Visibility)Target.Convert(false, typeof(Visibility), null, null);
+
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region ConvertBack
+
+        [Test]
         public void ConvertBackTest_Visible()
         {
-            BooleanToVisibilityConverter target = new BooleanToVisibilityConverter();
-
+            //arrange
             bool expected = true;
-            bool actual = (bool)target.ConvertBack(Visibility.Visible, typeof(bool), null, null);
 
+            //action
+            bool actual = (bool)Target.ConvertBack(Visibility.Visible, typeof(bool), null, null);
+
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void ConvertBackTest_HiddenCollapsed()
+        [Test]
+        public void ConvertBackTest_HiddenCollapsed([Values(Visibility.Hidden, Visibility.Collapsed)]Visibility visibility)
         {
-            BooleanToVisibilityConverter target = new BooleanToVisibilityConverter();
-
+            //arrange
             bool expected = false;
 
-            bool actual = (bool)target.ConvertBack(Visibility.Hidden, typeof(bool), null, null);
-            Assert.AreEqual(expected, actual);
+            //action
+            bool actual = (bool)Target.ConvertBack(visibility, typeof(bool), null, null);
 
-            actual = (bool)target.ConvertBack(Visibility.Collapsed, typeof(bool), null, null);
+            //assert
             Assert.AreEqual(expected, actual);
         }
+
+        #endregion
     }
 }

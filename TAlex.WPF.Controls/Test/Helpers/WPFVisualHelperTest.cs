@@ -2,21 +2,24 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xaml;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Controls;
 
 using TAlex.WPF.Helpers;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Helpers
 {
-    [TestClass]
+    [TestFixture]
     public class WPFVisualHelperTest
     {
-        [TestMethod]
+        #region FindAncestor
+
+        [Test]
+        [STAThread]
         public void FindAncestor()
         {
             FrameworkElement visualTree = XamlServices.Parse(@"
@@ -35,7 +38,7 @@ namespace TAlex.WPF.Controls.Test.Helpers
             Assert.IsNull(notFoundElement);
         }
 
-        [TestMethod]
+        [Test]
         public void FindAncestor_NotVisualElement()
         {
             DependencyObject visualTree = XamlServices.Parse(@"
@@ -47,5 +50,7 @@ namespace TAlex.WPF.Controls.Test.Helpers
             DependencyObject item = WPFVisualHelper.FindAncestor<TextBlock>(visualTree);
             Assert.IsNull(item);
         }
+
+        #endregion
     }
 }

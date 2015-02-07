@@ -2,17 +2,19 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Media;
 using TAlex.WPF.Media;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Media
 {
-    [TestClass]
+    [TestFixture]
     public class ColorUtilitiesTest
     {
-        [TestMethod]
+        #region GetHexCode
+
+        [Test]
         public void GetHexCodeTest()
         {
             string expected = "#FFFF4500";
@@ -21,7 +23,11 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region ColorToBgra32
+
+        [Test]
         public void ColorToBgra32Test()
         {
             int expected;
@@ -31,7 +37,11 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region IsKnownColor
+
+        [Test]
         public void IsKnownColorTest()
         {
             bool expected = true;
@@ -52,28 +62,32 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.IsNull(actualName);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region ParseColor
+
+        [Test]
         [ExpectedException(typeof(NullReferenceException))]
         public void ParseColorTest_NullValue()
         {
             Color actual = ColorUtilities.ParseColor(null);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(FormatException))]
         public void ParseColorTest_EmptyValue()
         {
             Color actual = ColorUtilities.ParseColor(String.Empty);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(FormatException))]
         public void ParseColorTest_IncorrectFormat()
         {
             Color actual = ColorUtilities.ParseColor("Some String");
         }
 
-        [TestMethod]
+        [Test]
         public void ParseColorTest_HexValue()
         {
             Color expected = Colors.Turquoise;
@@ -102,7 +116,7 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(Color.FromArgb(255, 0, 0, 15), actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ParseColorTest_KnownName()
         {
             Color expected = Colors.OrangeRed;
@@ -113,7 +127,11 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region TryParseColor
+
+        [Test]
         public void TryParseColor()
         {
             Color expectedColor = Colors.Green;
@@ -126,7 +144,7 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expectedColor, actualColor);
         }
 
-        [TestMethod]
+        [Test]
         public void TryParseColor_IncorrectFormat()
         {
             Color expectedColor = Colors.Transparent;
@@ -139,7 +157,11 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expectedColor, actualColor);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region ColorToBgra32
+
+        [Test]
         public void ColorToBgra32Test_FromChannels()
         {
             int expected;
@@ -150,7 +172,11 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region RgbToHsv
+
+        [Test]
         public void RgbToHsvTest()
         {
             Color rgbColor = Colors.Azure;
@@ -159,7 +185,11 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(rgbColor, ColorUtilities.HsvToRgb(hsvColor));
         }
 
-        [TestMethod]
+        #endregion
+
+        #region HsvToRgb
+
+        [Test]
         public void HsvToRgbTest()
         {
             HsvColor hsvColor = new HsvColor(180, 0.05882354003329282, 1);
@@ -168,7 +198,11 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(hsvColor, ColorUtilities.RgbToHsv(rgbColor));
         }
 
-        [TestMethod]
+        #endregion
+
+        #region FuzzyColorEquals
+
+        [Test]
         public void FuzzyColorEqualsRgbTest()
         {
             bool expected = true;
@@ -181,7 +215,7 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void FuzzyColorEqualsRgbTest_Unequal()
         {
             bool expected = false;
@@ -194,7 +228,7 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void FuzzyColorEqualsHsvTest()
         {
             bool expected = true;
@@ -207,7 +241,7 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void FuzzyColorEqualsHsvTest_Unequal()
         {
             bool expected = false;
@@ -219,5 +253,7 @@ namespace TAlex.WPF.Controls.Test.Media
             Assert.AreNotEqual(color1, color2);
             Assert.AreEqual(expected, actual);
         }
+
+        #endregion
     }
 }

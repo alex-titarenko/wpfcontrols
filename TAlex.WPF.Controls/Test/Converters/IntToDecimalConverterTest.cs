@@ -2,17 +2,18 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TAlex.WPF.Converters;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Converters
 {
-    [TestClass]
+    [TestFixture]
     public class IntToDecimalConverterTest
     {
-        [TestMethod]
+        #region Convert
+
+        [Test]
         public void ConvertTest()
         {
             Int32ToDecimalConverter target = new Int32ToDecimalConverter();
@@ -23,7 +24,11 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region ConvertBack
+
+        [Test]
         public void ConvertBackTest()
         {
             Int32ToDecimalConverter target = new Int32ToDecimalConverter();
@@ -33,5 +38,7 @@ namespace TAlex.WPF.Controls.Test.Converters
 
             Assert.AreEqual(expected, actual);
         }
+
+        #endregion
     }
 }

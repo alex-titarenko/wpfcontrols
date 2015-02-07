@@ -2,58 +2,78 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TAlex.WPF.Converters;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Converters
 {
-    [TestClass]
+    [TestFixture]
     public class CamelTextToRegularTextConverterTest
     {
-        [TestMethod]
+        protected CamelTextToRegularTextConverter target;
+
+        [SetUp]
+        public void SetUp()
+        {
+            target = new CamelTextToRegularTextConverter();
+        }
+
+
+        #region Convert
+
+        [Test]
         public void ConvertTest()
         {
-            CamelTextToRegularTextConverter target = new CamelTextToRegularTextConverter();
-
+            //arrange
             string expected = "Some Text";
+
+            //action
             string actual = target.Convert("SomeText", typeof(string), null, null) as String;
 
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_Acronym()
         {
-            CamelTextToRegularTextConverter target = new CamelTextToRegularTextConverter();
-
+            //arrange
             string expected = "IBM";
+
+            //action
             string actual = target.Convert("IBM", typeof(string), null, null) as String;
 
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_Combined()
         {
-            CamelTextToRegularTextConverter target = new CamelTextToRegularTextConverter();
-
+            //arrange
             string expected = "Learn WCF In Six Easy Months";
+
+            //action
             string actual = target.Convert("LearnWCFInSixEasyMonths", typeof(string), null, null) as String;
 
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest_AlphaNumeric()
         {
-            CamelTextToRegularTextConverter target = new CamelTextToRegularTextConverter();
-
+            //arrange
             string expected = "P346 Sid";
+
+            //action
             string actual = target.Convert("P346Sid", typeof(string), null, null) as String;
 
+            //assert
             Assert.AreEqual(expected, actual);
         }
+
+        #endregion
     }
 }

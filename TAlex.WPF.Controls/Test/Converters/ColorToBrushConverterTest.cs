@@ -3,17 +3,18 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TAlex.WPF.Converters;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Converters
 {
-    [TestClass]
+    [TestFixture]
     public class ColorToBrushConverterTest
     {
-        [TestMethod]
+        #region Convert
+
+        [Test]
         public void ConvertTest_Null()
         {
             ColorToBrushConverter target = new ColorToBrushConverter();
@@ -22,7 +23,7 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.IsNull(actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertTest()
         {
             ColorToBrushConverter target = new ColorToBrushConverter();
@@ -32,5 +33,7 @@ namespace TAlex.WPF.Controls.Test.Converters
 
             Assert.AreEqual(expected.Color, actual.Color);
         }
+
+        #endregion
     }
 }

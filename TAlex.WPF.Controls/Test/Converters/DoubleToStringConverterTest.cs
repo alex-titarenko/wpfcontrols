@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.Windows.Controls;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TAlex.WPF.Converters;
+using NUnit.Framework;
 
 
 namespace TAlex.WPF.Controls.Test.Converters
 {
-    [TestClass]
+    [TestFixture]
     public class DoubleToStringConverterTest
     {
-        [TestMethod]
+        #region Convert
+
+        [Test]
         public void ConvertTest()
         {
             DoubleToStringConverter target = new DoubleToStringConverter();
@@ -25,7 +26,11 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        #endregion
+
+        #region ConvertBack
+
+        [Test]
         public void ConvertBack()
         {
             DoubleToStringConverter target = new DoubleToStringConverter();
@@ -36,13 +41,15 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ConvertBack_ErrorInput()
         {
             DoubleToStringConverter target = new DoubleToStringConverter();
 
             object actual = target.ConvertBack("test", typeof(Double), null, CultureInfo.InvariantCulture);
-            Assert.IsInstanceOfType(actual, typeof(ValidationResult));
+            Assert.IsInstanceOf<ValidationResult>(actual);
         }
+
+        #endregion
     }
 }
