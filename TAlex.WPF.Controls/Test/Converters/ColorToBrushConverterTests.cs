@@ -10,27 +10,39 @@ using NUnit.Framework;
 namespace TAlex.WPF.Controls.Test.Converters
 {
     [TestFixture]
-    public class ColorToBrushConverterTest
+    public class ColorToBrushConverterTests
     {
+        protected ColorToBrushConverter Target;
+
+        [SetUp]
+        public void SetUp()
+        {
+            Target = new ColorToBrushConverter();
+        }
+
+
         #region Convert
 
         [Test]
         public void ConvertTest_Null()
-        {
-            ColorToBrushConverter target = new ColorToBrushConverter();
-            SolidColorBrush actual = target.Convert(null, typeof(Brush), null, null) as SolidColorBrush;
+        {            
+            //action
+            SolidColorBrush actual = Target.Convert(null, typeof(Brush), null, null) as SolidColorBrush;
 
+            //assert
             Assert.IsNull(actual);
         }
 
         [Test]
         public void ConvertTest()
         {
-            ColorToBrushConverter target = new ColorToBrushConverter();
-
+            //arrange
             SolidColorBrush expected = Brushes.Orange;
-            SolidColorBrush actual = target.Convert(Colors.Orange, typeof(Brush), null, null) as SolidColorBrush;
 
+            //action
+            SolidColorBrush actual = Target.Convert(Colors.Orange, typeof(Brush), null, null) as SolidColorBrush;
+
+            //assert
             Assert.AreEqual(expected.Color, actual.Color);
         }
 

@@ -51,16 +51,16 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\BooleanToVisibilityConverterTest.cs" />
-    <Compile Include="Converters\CamelTextToRegularTextConverterTest.cs" />
-    <Compile Include="Converters\ColorToBrushConverterTest.cs" />
-    <Compile Include="Media\ColorUtilitiesTest.cs" />
-    <Compile Include="Converters\DoubleToStringConverterTest.cs" />
-    <Compile Include="Converters\IntToDecimalConverterTest.cs" />
-    <Compile Include="Converters\NotEmptyStringToBoolConverterTest.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverterTests.cs" />
+    <Compile Include="Converters\CamelTextToRegularTextConverterTests.cs" />
+    <Compile Include="Converters\ColorToBrushConverterTests.cs" />
+    <Compile Include="Media\ColorUtilitiesTests.cs" />
+    <Compile Include="Converters\DoubleToStringConverterTests.cs" />
+    <Compile Include="Converters\IntToDecimalConverterTests.cs" />
+    <Compile Include="Converters\NotEmptyStringToBoolConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Converters\IsNotNullToBoolConverterTest.cs" />
-    <Compile Include="Helpers\WPFVisualHelperTest.cs" />
+    <Compile Include="Converters\IsNotNullToBoolConverterTests.cs" />
+    <Compile Include="Helpers\WPFVisualHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAlex.WPF.Controls.csproj">

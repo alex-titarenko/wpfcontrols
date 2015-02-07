@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace TAlex.WPF.Controls.Test.Converters
 {
     [TestFixture]
-    public class CamelTextToRegularTextConverterTest
+    public class CamelTextToRegularTextConverterTests
     {
         protected CamelTextToRegularTextConverter target;
 

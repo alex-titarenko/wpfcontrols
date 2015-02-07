@@ -9,18 +9,29 @@ using NUnit.Framework;
 namespace TAlex.WPF.Controls.Test.Converters
 {
     [TestFixture]
-    public class IntToDecimalConverterTest
+    public class IntToDecimalConverterTests
     {
+        protected Int32ToDecimalConverter Target;
+
+        [SetUp]
+        public void SetUp()
+        {
+            Target = new Int32ToDecimalConverter();
+        }
+        
+
         #region Convert
 
         [Test]
         public void ConvertTest()
         {
-            Int32ToDecimalConverter target = new Int32ToDecimalConverter();
-
+            //arrange
             decimal expected = 346;
-            decimal actual = (decimal)target.Convert(346, typeof(Decimal), null, null);
 
+            //action
+            decimal actual = (decimal)Target.Convert(346, typeof(Decimal), null, null);
+
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
@@ -31,11 +42,13 @@ namespace TAlex.WPF.Controls.Test.Converters
         [Test]
         public void ConvertBackTest()
         {
-            Int32ToDecimalConverter target = new Int32ToDecimalConverter();
-
+            //arrange
             int expected = 346;
-            int actual = (int)target.ConvertBack(346M, typeof(int), null, null);
 
+            //action
+            int actual = (int)Target.ConvertBack(346M, typeof(int), null, null);
+
+            //assert
             Assert.AreEqual(expected, actual);
         }
 

@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace TAlex.WPF.Controls.Test.Helpers
 {
     [TestFixture]
-    public class WPFVisualHelperTest
+    public class WPFVisualHelperTests
     {
         #region FindAncestor
 

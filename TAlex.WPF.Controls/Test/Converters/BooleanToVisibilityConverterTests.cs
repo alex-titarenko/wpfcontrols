@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace TAlex.WPF.Controls.Test.Converters
 {
     [TestFixture]
-    public class BooleanToVisibilityConverterTest
+    public class BooleanToVisibilityConverterTests
     {
         protected BooleanToVisibilityConverter Target;
 

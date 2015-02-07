@@ -11,18 +11,29 @@ using NUnit.Framework;
 namespace TAlex.WPF.Controls.Test.Converters
 {
     [TestFixture]
-    public class DoubleToStringConverterTest
+    public class DoubleToStringConverterTests
     {
+        protected DoubleToStringConverter Target;
+
+        [SetUp]
+        public void SetUp()
+        {
+            Target = new DoubleToStringConverter();
+        }
+        
+
         #region Convert
 
         [Test]
         public void ConvertTest()
         {
-            DoubleToStringConverter target = new DoubleToStringConverter();
-
+            //arrange
             string expected = "36.457";
-            string actual = target.Convert(36.457, typeof(String), null, CultureInfo.InvariantCulture) as String;
+            
+            //action
+            string actual = Target.Convert(36.457, typeof(String), null, CultureInfo.InvariantCulture) as String;
 
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
@@ -33,20 +44,23 @@ namespace TAlex.WPF.Controls.Test.Converters
         [Test]
         public void ConvertBack()
         {
-            DoubleToStringConverter target = new DoubleToStringConverter();
-
+            //arrange
             double expected = 36.457;
-            double actual = (double)target.ConvertBack("36.457", typeof(Double), null, CultureInfo.InvariantCulture);
+            
+            //action
+            double actual = (double)Target.ConvertBack("36.457", typeof(Double), null, CultureInfo.InvariantCulture);
 
+            //assert
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void ConvertBack_ErrorInput()
         {
-            DoubleToStringConverter target = new DoubleToStringConverter();
+            //action
+            object actual = Target.ConvertBack("test", typeof(Double), null, CultureInfo.InvariantCulture);
 
-            object actual = target.ConvertBack("test", typeof(Double), null, CultureInfo.InvariantCulture);
+            //assert
             Assert.IsInstanceOf<ValidationResult>(actual);
         }
 

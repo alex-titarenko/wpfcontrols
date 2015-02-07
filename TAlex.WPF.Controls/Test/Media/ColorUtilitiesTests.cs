@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace TAlex.WPF.Controls.Test.Media
 {
     [TestFixture]
-    public class ColorUtilitiesTest
+    public class ColorUtilitiesTests
     {
         #region GetHexCode
 
