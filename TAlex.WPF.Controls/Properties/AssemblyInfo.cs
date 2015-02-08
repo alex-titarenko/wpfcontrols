@@ -14,9 +14,9 @@ using System.Windows.Markup;
 [assembly: AssemblyTitleAttribute("Controls for WPF")]
 [assembly: AssemblyCompanyAttribute("T-Alex Software")]
 [assembly: AssemblyProductAttribute("TAlex.WPF.Controls")]
-[assembly: AssemblyCopyrightAttribute("Copyright © 2012 T-Alex Software")]
-[assembly: AssemblyVersionAttribute("1.9.*")]
-[assembly: AssemblyFileVersionAttribute("1.9.0.0")]
+[assembly: AssemblyCopyrightAttribute("Copyright © 2015 T-Alex Software")]
+[assembly: AssemblyVersionAttribute("2.0.0.0")]
+[assembly: AssemblyFileVersionAttribute("2.0.0.0")]
 
 [assembly: XmlnsDefinition("http://schemas.talex-soft.com/2010/xaml/presentation", "TAlex.WPF.Controls")]
 [assembly: XmlnsDefinition("http://schemas.talex-soft.com/2010/xaml/presentation", "TAlex.WPF.Converters")]

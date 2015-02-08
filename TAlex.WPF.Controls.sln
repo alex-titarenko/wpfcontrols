@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAlex.WPF.Controls", "TAlex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6A8B470F-A5EC-4762-B0FB-D72E98E470CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAlex.WPF.Controls.Test", "TAlex.WPF.Controls\Test\TAlex.WPF.Controls.Test.csproj", "{5C7DD595-69C7-4C79-BAC1-7ADB7B369C10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAlex.WPF.Controls.Tests", "TAlex.WPF.Controls\Test\TAlex.WPF.Controls.Tests.csproj", "{5C7DD595-69C7-4C79-BAC1-7ADB7B369C10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
