@@ -24,7 +24,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region Convert
 
         [Test]
-        public void ConvertTest_Null()
+        public void Convert_Null_Collapsed()
         {
             //arrange
             Visibility expected = Visibility.Collapsed;
@@ -37,7 +37,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest_True()
+        public void Convert_True_Visible()
         {
             //arrange
             Visibility expected = Visibility.Visible;
@@ -50,7 +50,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest_FalseCollapsed()
+        public void Convert_False_Collapsed()
         {
             //arrange
             Visibility expected = Visibility.Collapsed;
@@ -63,7 +63,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest_FalseHidden()
+        public void Convert_FalseWithUseHidden_Hidden()
         {
             //arrange
             Target.UseHidden = true;
@@ -81,7 +81,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region ConvertBack
 
         [Test]
-        public void ConvertBackTest_Visible()
+        public void ConvertBack_Visible_True()
         {
             //arrange
             bool expected = true;
@@ -94,7 +94,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertBackTest_HiddenCollapsed([Values(Visibility.Hidden, Visibility.Collapsed)]Visibility visibility)
+        public void ConvertBack_HiddenOrCollapsed_False([Values(Visibility.Hidden, Visibility.Collapsed)]Visibility visibility)
         {
             //arrange
             bool expected = false;

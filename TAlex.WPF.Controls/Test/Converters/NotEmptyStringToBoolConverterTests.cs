@@ -11,25 +11,25 @@ namespace TAlex.WPF.Controls.Test.Converters
     [TestFixture]
     public class NotEmptyStringToBoolConverterTests
     {
-        NotEmptyStringToBooleanConverter target;
+        protected NotEmptyStringToBooleanConverter Target;
 
         [SetUp]
         public void SetUp()
         {
-            target = new NotEmptyStringToBooleanConverter();
+            Target = new NotEmptyStringToBooleanConverter();
         }
 
 
         #region Convert
 
         [Test]
-        public void ConvertTest_Text()
+        public void Convert_SomeText_True()
         {
             //arrange
             bool expected = true;
 
             //action
-            bool actual = (bool)target.Convert("Some text", typeof(bool), null, null);
+            bool actual = (bool)Target.Convert("Some text", typeof(bool), null, null);
 
             //assert
             Assert.AreEqual(expected, actual);
@@ -38,30 +38,42 @@ namespace TAlex.WPF.Controls.Test.Converters
         [TestCase("")]
         [TestCase(" \t  ")]
         [TestCase(null)]
-        public void ConvertTest_WhiteSpaces(string value)
+        public void Convert_Whitespaces_False(string value)
         {
             //arrange
             bool expected = false;
 
             //action
-            bool actual = (bool)target.Convert(value, typeof(bool), null, null);
+            bool actual = (bool)Target.Convert(value, typeof(bool), null, null);
 
             //assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase("", true)]
-        [TestCase("Universe", false)]
-        public void ConvertTest_IsReversed(string value, bool expected)
+        [Test]
+        public void Convert_IsReversedWithEmptyString_True()
         {
             //arrange
-            target.IsReversed = true;
+            Target.IsReversed = true;
 
             //action
-            bool actual = (bool)target.Convert(value, typeof(bool), null, null);
+            bool actual = (bool)Target.Convert(String.Empty, typeof(bool), null, null);
 
             //assert
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
+        }
+
+        [Test]
+        public void Convert_IsReversedWithSomeText_False()
+        {
+            //arrange
+            Target.IsReversed = true;
+
+            //action
+            bool actual = (bool)Target.Convert("Universe", typeof(bool), null, null);
+
+            //assert
+            Assert.AreEqual(false, actual);
         }
 
         #endregion

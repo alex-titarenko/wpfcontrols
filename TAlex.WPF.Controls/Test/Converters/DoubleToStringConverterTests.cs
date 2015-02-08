@@ -25,7 +25,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region Convert
 
         [Test]
-        public void ConvertTest()
+        public void Convert_DoubleNumber_AppropriateString()
         {
             //arrange
             string expected = "36.457";
@@ -42,7 +42,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region ConvertBack
 
         [Test]
-        public void ConvertBack()
+        public void ConvertBack_NumberString_AppropriateDoubleNumber()
         {
             //arrange
             double expected = 36.457;
@@ -55,7 +55,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertBack_ErrorInput()
+        public void ConvertBack_NotNumberString_ValidationResult()
         {
             //action
             object actual = Target.ConvertBack("test", typeof(Double), null, CultureInfo.InvariantCulture);

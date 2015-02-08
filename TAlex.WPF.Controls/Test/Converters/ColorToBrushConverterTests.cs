@@ -24,7 +24,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region Convert
 
         [Test]
-        public void ConvertTest_Null()
+        public void Convert_Null_Null()
         {            
             //action
             SolidColorBrush actual = Target.Convert(null, typeof(Brush), null, null) as SolidColorBrush;
@@ -34,7 +34,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest()
+        public void Convert_Color_AppropriateBrush()
         {
             //arrange
             SolidColorBrush expected = Brushes.Orange;

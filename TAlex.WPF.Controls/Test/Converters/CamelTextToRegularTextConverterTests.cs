@@ -23,7 +23,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region Convert
 
         [Test]
-        public void ConvertTest()
+        public void Convert_CamelText_RegularText()
         {
             //arrange
             string expected = "Some Text";
@@ -36,7 +36,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest_Acronym()
+        public void Convert_Acronym_Acronym()
         {
             //arrange
             string expected = "IBM";
@@ -49,7 +49,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest_Combined()
+        public void Convert_MixedText_RegularTextWithAcronym()
         {
             //arrange
             string expected = "Learn WCF In Six Easy Months";
@@ -62,7 +62,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest_AlphaNumeric()
+        public void Convert_AlphaNumericText_RegularText()
         {
             //arrange
             string expected = "P346 Sid";

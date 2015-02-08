@@ -23,7 +23,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region Convert
 
         [Test]
-        public void ConvertTest()
+        public void Convert_IntNumber_AppropriateDecimal()
         {
             //arrange
             decimal expected = 346;
@@ -40,7 +40,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region ConvertBack
 
         [Test]
-        public void ConvertBackTest()
+        public void ConvertBack_Decimal_AppropriateIntNumber()
         {
             //arrange
             int expected = 346;

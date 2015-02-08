@@ -8,9 +8,6 @@ using NUnit.Framework;
 
 namespace TAlex.WPF.Controls.Test.Converters
 {
-    /// <summary>
-    /// Summary description for NotNullToBoolConverter
-    /// </summary>
     [TestFixture]
     public class IsNotNullToBoolConverterTests
     {
@@ -26,7 +23,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         #region Convert
 
         [Test]
-        public void ConvertTest_NotNull()
+        public void Convert_SomeString_True()
         {
             //arrange
             bool expected = true;
@@ -39,7 +36,7 @@ namespace TAlex.WPF.Controls.Test.Converters
         }
 
         [Test]
-        public void ConvertTest_Null()
+        public void Convert_Null_False()
         {
             //arrange
             bool expected = false;
@@ -51,18 +48,30 @@ namespace TAlex.WPF.Controls.Test.Converters
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase(null, true)]
-        [TestCase(5, false)]
-        public void ConvertTest_IsReversed(object value, bool expected)
+        [Test]
+        public void Convert_IsReversedWithNull_True()
         {
             //arrange
             Target.IsReversed = true;
 
             //action
-            bool actual = (bool)Target.Convert(value, typeof(Boolean), null, null);
+            bool actual = (bool)Target.Convert(null, typeof(Boolean), null, null);
 
             //assert
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
+        }
+
+        [Test]
+        public void Convert_IsReversedWithNumber_False()
+        {
+            //arrange
+            Target.IsReversed = true;
+
+            //action
+            bool actual = (bool)Target.Convert(5, typeof(Boolean), null, null);
+
+            //assert
+            Assert.AreEqual(false, actual);
         }
 
         #endregion
