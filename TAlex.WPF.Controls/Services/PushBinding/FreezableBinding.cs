@@ -9,13 +9,22 @@ using System.Globalization;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
+
 namespace TAlex.WPF.Services.PushBinding
 {
+    /// <remarks>
+    /// Based on code from http://meleak.wordpress.com/2011/08/28/onewaytosource-binding-for-readonly-dependency-property/
+    /// </remarks>
     public class FreezableBinding : Freezable
     {
-        #region Properties
+        #region Fields
 
         private Binding _binding;
+
+        #endregion
+
+        #region Properties
+
         protected Binding Binding
         {
             get
@@ -174,11 +183,15 @@ namespace TAlex.WPF.Services.PushBinding
           get { return Binding.ValidationRules; }
         }
 
-        #endregion // Properties
+        #endregion
+
+        #region Methods
 
         protected override Freezable CreateInstanceCore()
         {
             return new FreezableBinding();
         }
+
+        #endregion
     }
 }

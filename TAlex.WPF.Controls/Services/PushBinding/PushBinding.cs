@@ -6,38 +6,23 @@ using System.Windows;
 using System.ComponentModel;
 using System.Windows.Data;
 
+
 namespace TAlex.WPF.Services.PushBinding
 {
+    /// <summary>
+    /// Helper for OneWayToSource binding for read-only dependency properties.
+    /// </summary>
+    /// <remarks>
+    /// Based on code from http://meleak.wordpress.com/2011/08/28/onewaytosource-binding-for-readonly-dependency-property/
+    /// </remarks>
     public class PushBinding : FreezableBinding
     {
-        #region Dependency Properties
+        #region Fields
 
-        public static DependencyProperty TargetPropertyMirrorProperty =
-            DependencyProperty.Register("TargetPropertyMirror",
-                                        typeof(object),
-                                        typeof(PushBinding));
-        public static DependencyProperty TargetPropertyListenerProperty =
-            DependencyProperty.Register("TargetPropertyListener",
-                                        typeof(object),
-                                        typeof(PushBinding),
-                                        new UIPropertyMetadata(null, OnTargetPropertyListenerChanged));
+        public static DependencyProperty TargetPropertyMirrorProperty;
+        public static DependencyProperty TargetPropertyListenerProperty;
 
-        private static void OnTargetPropertyListenerChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            PushBinding pushBinding = sender as PushBinding;
-            pushBinding.TargetPropertyValueChanged();
-        }
-
-        #endregion // Dependency Properties
-
-        #region Constructor
-
-        public PushBinding()
-        {
-            Mode = BindingMode.OneWayToSource;
-        }
-
-        #endregion // Constructor
+        #endregion
 
         #region Properties
 
@@ -46,12 +31,13 @@ namespace TAlex.WPF.Services.PushBinding
             get { return GetValue(TargetPropertyMirrorProperty); }
             set { SetValue(TargetPropertyMirrorProperty, value); }
         }
+
         public object TargetPropertyListener
         {
             get { return GetValue(TargetPropertyListenerProperty); }
             set { SetValue(TargetPropertyListenerProperty, value); }
         }
-        
+
         [DefaultValue(null)]
         public string TargetProperty
         {
@@ -59,7 +45,24 @@ namespace TAlex.WPF.Services.PushBinding
             set;
         }
 
-        #endregion // Properties
+        #endregion
+
+        #region Constructors
+
+        static PushBinding()
+        {
+            TargetPropertyMirrorProperty = DependencyProperty.Register("TargetPropertyMirror", typeof(object), typeof(PushBinding));
+            TargetPropertyListenerProperty = DependencyProperty.Register("TargetPropertyListener", typeof(object), typeof(PushBinding), new UIPropertyMetadata(null, OnTargetPropertyListenerChanged));
+        }
+
+        public PushBinding()
+        {
+            Mode = BindingMode.OneWayToSource;
+        }
+
+        #endregion
+
+        #region Methods
 
         public void SetupTargetBinding(FrameworkElement targetObject)
         {
@@ -67,14 +70,10 @@ namespace TAlex.WPF.Services.PushBinding
             {
                 return;
             }
-            
-            // Prevent the designer from reporting exceptions since
-            // changes will be made of a Binding in use if it is set
+
             if (DesignerProperties.GetIsInDesignMode(this) == true)
                 return;
 
-            // Bind to the selected TargetProperty, e.g. ActualHeight and get
-            // notified about changes in OnTargetPropertyListenerChanged
             Binding listenerBinding = new Binding
             {
                 Source = targetObject,
@@ -83,11 +82,14 @@ namespace TAlex.WPF.Services.PushBinding
             };
             BindingOperations.SetBinding(this, TargetPropertyListenerProperty, listenerBinding);
 
-            // Set up a OneWayToSource Binding with the Binding declared in Xaml from
-            // the Mirror property of this class. The mirror property will be updated
-            // everytime the Listener property gets updated
             BindingOperations.SetBinding(this, TargetPropertyMirrorProperty, Binding);
             TargetPropertyValueChanged();
+        }
+
+        private static void OnTargetPropertyListenerChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            PushBinding pushBinding = sender as PushBinding;
+            pushBinding.TargetPropertyValueChanged();
         }
 
         private void TargetPropertyValueChanged()
@@ -95,5 +97,7 @@ namespace TAlex.WPF.Services.PushBinding
             object targetPropertyValue = GetValue(TargetPropertyListenerProperty);
             this.SetValue(TargetPropertyMirrorProperty, targetPropertyValue);
         }
+
+        #endregion
     }
 }
