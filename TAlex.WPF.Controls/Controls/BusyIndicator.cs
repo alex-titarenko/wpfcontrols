@@ -7,11 +7,16 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
+
 namespace TAlex.WPF.Controls
 {
     /// <summary>
     /// A control to provide a visual indicator when an application is busy.
     /// </summary>
+    /// <remarks>
+    /// Based on code from https://wpftoolkit.codeplex.com/
+    /// The original license of source is Ms-PL, full text see on: https://wpftoolkit.codeplex.com/license
+    /// </remarks>
     [TemplateVisualState(Name = VisualStates.StateIdle, GroupName = VisualStates.GroupBusyStatus)]
     [TemplateVisualState(Name = VisualStates.StateBusy, GroupName = VisualStates.GroupBusyStatus)]
     [TemplateVisualState(Name = VisualStates.StateVisible, GroupName = VisualStates.GroupVisibility)]
@@ -44,26 +49,12 @@ namespace TAlex.WPF.Controls
             OverlayStyleProperty = DependencyProperty.Register("OverlayStyle", typeof(Style), typeof(BusyIndicator), new PropertyMetadata(null));
             ProgressBarStyleProperty = DependencyProperty.Register("ProgressBarStyle", typeof(Style), typeof(BusyIndicator), new PropertyMetadata(null));
 
-
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BusyIndicator), new FrameworkPropertyMetadata(typeof(BusyIndicator)));
         }
 
         public BusyIndicator()
         {
             _displayAfterTimer.Tick += DisplayAfterTimerElapsed;
-        }
-
-        #endregion
-
-        #region Base Class Overrides
-
-        /// <summary>
-        /// Overrides the OnApplyTemplate method.
-        /// </summary>
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            ChangeVisualState(false);
         }
 
         #endregion
@@ -233,6 +224,15 @@ namespace TAlex.WPF.Controls
         {
             VisualStateManager.GoToState(this, IsBusy ? VisualStates.StateBusy : VisualStates.StateIdle, useTransitions);
             VisualStateManager.GoToState(this, IsContentVisible ? VisualStates.StateVisible : VisualStates.StateHidden, useTransitions);
+        }
+
+        /// <summary>
+        /// Overrides the OnApplyTemplate method.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            ChangeVisualState(false);
         }
 
         #endregion
