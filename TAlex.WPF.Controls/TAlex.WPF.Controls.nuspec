@@ -13,6 +13,6 @@
     <description>$description$</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015 T-Alex Software</copyright>
-    <tags>Controls WPF ColorPicker NumericUpDown Converters</tags>
+    <tags>Controls WPF ColorPicker NumericUpDown HtmlRichEditor Converters</tags>
   </metadata>
 </package>
