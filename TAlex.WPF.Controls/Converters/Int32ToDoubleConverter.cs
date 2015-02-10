@@ -9,7 +9,7 @@ using System.Windows.Data;
 namespace TAlex.WPF.Converters
 {
     [ValueConversion(typeof(Int32), typeof(double))]
-    class Int32ToDoubleConverter : ConverterBase<Int32ToDoubleConverter>
+    public class Int32ToDoubleConverter : ConverterBase<Int32ToDoubleConverter>
     {
         /// <summary>
         /// Converts a 32-bit signed integer number to a double number.
