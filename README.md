@@ -1,8 +1,7 @@
 # WPF Controls
-Set of Controls for WPF.
+#### Set of Controls for WPF
 
-Controls:
----------
+*Controls:*
 * ColorChip
 * ColorComboBox
 * HtmlRichEditor
@@ -10,9 +9,7 @@ Controls:
 * NumericUpDown
 * BusyIndicator
 
-Converters:
------------
-
+*Converters:*
 * BooleanToVisibilityConverter
 * CamelTextToRegularTextConverter
 * ColorToBrushConverter
