@@ -1,8 +1,9 @@
 # WPF Controls
 [![NuGet Version](http://img.shields.io/nuget/v/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/) [![NuGet Downloads](http://img.shields.io/nuget/dt/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/)
-#### Set of Controls for WPF
 
-*Controls:*
+Set of Controls for WPF
+
+## Controls
 * ColorChip
 * ColorComboBox
 * HtmlRichEditor
@@ -10,7 +11,7 @@
 * NumericUpDown
 * BusyIndicator
 
-*Converters:*
+## Converters
 * BooleanToVisibilityConverter
 * CamelTextToRegularTextConverter
 * ColorToBrushConverter
@@ -26,3 +27,6 @@
 ## Get it on NuGet!
 
     Install-Package TAlex.WPF.Controls
+
+## License
+WPFControls is under the [MIT license](https://github.com/T-Alex/WPFControls/blob/master/LICENSE.md).
