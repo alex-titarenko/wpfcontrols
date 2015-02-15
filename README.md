@@ -20,3 +20,8 @@
 * IsNotNullToBooleanConverter
 * NotEmptyStringToBooleanConverter
 * WidthUnitToMaxWidthConverter
+
+
+## Get it on NuGet!
+
+    Install-Package TAlex.WPF.Controls
