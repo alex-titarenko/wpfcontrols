@@ -14,16 +14,15 @@ Set of Controls for WPF
 * **BusyIndicator** - helps to notify user when your application is busy with appropriate indicator.
 
 #### Converters
-* BooleanToVisibilityConverter
-* CamelTextToRegularTextConverter
-* ColorToBrushConverter
-* DoubleToStringConverter
-* EnumToBooleanConverter
-* Int32ToDecimalConverter
-* Int32ToDoubleConverter
-* IsNotNullToBooleanConverter
-* NotEmptyStringToBooleanConverter
-* WidthUnitToMaxWidthConverter
+* **BooleanToVisibilityConverter** - converts boolean value to Visibility and vice versa.
+* **CamelTextToRegularTextConverter** - converts camel case text like "HelloWorld" to regual text like "Hello World"
+* **ColorToBrushConverter** - converts color to brush.
+* **DoubleToStringConverter** - converts double value to string and vice versa.
+* **EnumToBooleanConverter** - converts any Enum value to boolean and vice verse.
+* **Int32ToDecimalConverter** - converts Int32 numeric value to it's equivalent decimal value.
+* **Int32ToDoubleConverter** - converts Int32 numeric value to it's equivalent double value.
+* **IsNotNullToBooleanConverter** - converts any not nullable object to true and vice versa.
+* **NotEmptyStringToBooleanConverter** - converts any not empty string to true and vice versa.
 
 
 ## Get it on NuGet!
