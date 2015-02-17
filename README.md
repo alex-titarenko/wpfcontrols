@@ -15,7 +15,7 @@ Set of Controls for WPF
 
 #### Converters
 * **BooleanToVisibilityConverter** - converts boolean value to Visibility and vice versa.
-* **CamelTextToRegularTextConverter** - converts camel case text like "HelloWorld" to regual text like "Hello World"
+* **CamelTextToRegularTextConverter** - converts camel case text like *"HelloWorld"* to regual text like *"Hello World"*
 * **ColorToBrushConverter** - converts color to brush.
 * **DoubleToStringConverter** - converts double value to string and vice versa.
 * **EnumToBooleanConverter** - converts any Enum value to boolean and vice verse.
