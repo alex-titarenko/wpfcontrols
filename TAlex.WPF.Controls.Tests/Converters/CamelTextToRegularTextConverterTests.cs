@@ -6,7 +6,7 @@ using TAlex.WPF.Converters;
 using NUnit.Framework;
 
 
-namespace TAlex.WPF.Controls.Test.Converters
+namespace TAlex.WPF.Controls.Tests.Converters
 {
     [TestFixture]
     public class CamelTextToRegularTextConverterTests

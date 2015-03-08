@@ -42,6 +42,7 @@ _ReSharper*/
 
 #Project files
 [Bb]uild/
+_[Bb]uild/
 
 #Subversion files
 .svn
@@ -51,6 +52,7 @@ _ReSharper*/
 
 #NuGet
 *.nupkg
+[Nn]u[Gg]et.exe
 packages/
 
 #ncrunch

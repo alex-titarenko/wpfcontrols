@@ -7,7 +7,7 @@ using TAlex.WPF.Media;
 using NUnit.Framework;
 
 
-namespace TAlex.WPF.Controls.Test.Media
+namespace TAlex.WPF.Controls.Tests.Media
 {
     [TestFixture]
     public class ColorUtilitiesTests

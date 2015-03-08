@@ -10,7 +10,7 @@ using TAlex.WPF.Helpers;
 using NUnit.Framework;
 
 
-namespace TAlex.WPF.Controls.Test.Helpers
+namespace TAlex.WPF.Controls.Tests.Helpers
 {
     [TestFixture]
     public class WPFVisualHelperTests

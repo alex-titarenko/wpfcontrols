@@ -1,4 +1,5 @@
 # WPF Controls
+[![Build status](https://ci.appveyor.com/api/projects/status/lfao253dbnmpv3pw?svg=true)](https://ci.appveyor.com/project/T-Alex/wpfcontrols)
 [![NuGet Version](http://img.shields.io/nuget/v/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/) [![NuGet Downloads](http://img.shields.io/nuget/dt/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/)
 
 Set of Controls for WPF
@@ -30,4 +31,4 @@ Set of Controls for WPF
     Install-Package TAlex.WPF.Controls
 
 ## License
-WPFControls is under the [MIT license](https://github.com/T-Alex/WPFControls/blob/master/LICENSE.md).
+WPFControls is under the [MIT license](LICENSE.md).
