@@ -49,6 +49,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>bin\Release\TAlex.WPF.Controls.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
