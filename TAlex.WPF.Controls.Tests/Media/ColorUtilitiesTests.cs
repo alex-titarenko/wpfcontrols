@@ -85,27 +85,33 @@ namespace TAlex.WPF.Controls.Tests.Media
         #region ParseColor
 
         [Test]
-        [ExpectedException(typeof(NullReferenceException))]
         public void ParseColorTest_Null_ThrowException()
         {
             //action
-            Color actual = ColorUtilities.ParseColor(null);
+            TestDelegate action = () => ColorUtilities.ParseColor(null);
+
+            // assert
+            Assert.Throws<NullReferenceException>(action);
         }
 
         [Test]
-        [ExpectedException(typeof(FormatException))]
         public void ParseColorTest_EmptyString_ThrowException()
         {
             //action
-            Color actual = ColorUtilities.ParseColor(String.Empty);
+            TestDelegate action = () => ColorUtilities.ParseColor(String.Empty);
+
+            // assert
+            Assert.Throws<FormatException>(action);
         }
 
         [Test]
-        [ExpectedException(typeof(FormatException))]
         public void ParseColorTest_IncorrectFormat_ThrowException()
         {
             //action
-            Color actual = ColorUtilities.ParseColor("Some String");
+            TestDelegate action = () => ColorUtilities.ParseColor("Some String");
+
+            // assert
+            Assert.Throws<FormatException>(action);
         }
 
         [TestCase("#FF40E0D0", 255, 64, 224, 208)]

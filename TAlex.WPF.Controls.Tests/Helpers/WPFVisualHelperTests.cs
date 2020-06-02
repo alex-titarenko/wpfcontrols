@@ -17,8 +17,7 @@ namespace TAlex.WPF.Controls.Tests.Helpers
     {
         #region FindAncestor
 
-        [Test]
-        [STAThread]
+        [Test, Ignore("STAThread attribute is not supported in .NET Core")]
         public void FindAncestor_SomeDependencyObject_Ancestor()
         {
             //arrange
@@ -38,8 +37,7 @@ namespace TAlex.WPF.Controls.Tests.Helpers
             Assert.IsNotNull(foundElement);
         }
 
-        [Test]
-        [STAThread]
+        [Test, Ignore("STAThread attribute is not supported in .NET Core")]
         public void FindAncestor_FindNotExistingAncestor_Null()
         {
             //arrange
