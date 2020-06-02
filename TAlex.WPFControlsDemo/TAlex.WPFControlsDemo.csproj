@@ -12,6 +12,7 @@
     <Version>3.0.0</Version>
     <Company>Alex Titarenko</Company>
     <Copyright>Copyright (c) 2020 Alex Titarenko</Copyright>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
