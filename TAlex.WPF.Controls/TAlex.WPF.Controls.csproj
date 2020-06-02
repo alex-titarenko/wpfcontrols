@@ -1,233 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5FD73C9D-35C2-4E7A-8CB6-B9BAFFF6DA0F}</ProjectGuid>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworks>netcoreapp3.1;net461</TargetFrameworks>
+    <UseWPF>true</UseWPF>
     <RootNamespace>TAlex.WPF</RootNamespace>
     <AssemblyName>TAlex.WPF.Controls</AssemblyName>
-    <WarningLevel>4</WarningLevel>
-    <OutputType>library</OutputType>
-    <!-- Most people will use Publish dialog in Visual Studio to increment this -->
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Title>Controls for WPF</Title>
+    <Product>TAlex.WPF.Controls</Product>
+    <Description>Collection of controls for WPF</Description>
+    <Version>3.0.0</Version>
+    <Company>Alex Titarenko</Company>
+    <Copyright>Copyright (c) 2020 Alex Titarenko</Copyright>
     <DocumentationFile>bin\Debug\TAlex.WPF.Controls.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <IsPackable>true</IsPackable>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\TAlex.WPF.Controls.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationCore">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationFramework">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="UIAutomationProvider">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="UIAutomationTypes" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="CommonDialogs\InsertHyperlinkDialog.xaml.cs">
-      <DependentUpon>InsertHyperlinkDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CommonDialogs\InsertImageDialog.xaml.cs">
-      <DependentUpon>InsertImageDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CommonDialogs\InsertTableDialog.xaml.cs">
-      <DependentUpon>InsertTableDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BusyIndicator.cs" />
-    <Compile Include="Controls\ColorChip.cs" />
-    <Compile Include="Controls\ColorComboBox.xaml.cs">
-      <DependentUpon>ColorComboBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\HtmlRichEditor.xaml.cs">
-      <DependentUpon>HtmlRichEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ImageEx.cs" />
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\CamelTextToRegularTextConverter.cs" />
-    <Compile Include="Converters\ColorToBrushConverter.cs" />
-    <Compile Include="Converters\DoubleToStringConverter.cs" />
-    <Compile Include="Converters\EnumToBooleanConverter.cs" />
-    <Compile Include="Converters\Int32ToDecimalConverter.cs" />
-    <Compile Include="Converters\Int32ToDoubleConverter.cs" />
-    <Compile Include="Converters\NotEmptyStringToBooleanConverter.cs" />
-    <Compile Include="Converters\IsNotNullToBooleanConverter.cs" />
-    <Compile Include="Converters\WidthUnitToMaxWidthConverter.cs" />
-    <Compile Include="Helpers\EnumerableExtensions.cs" />
-    <Compile Include="Helpers\WPFVisualHelper.cs" />
-    <Compile Include="Media\ColorItem.cs" />
-    <Compile Include="CommonDialogs\ColorPickerDialog.xaml.cs">
-      <DependentUpon>ColorPickerDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Media\ColorUtilities.cs" />
-    <Compile Include="CommonDialogs\FolderBrowserDialog.cs" />
-    <Compile Include="CommonDialogs\FontChooserDialog.xaml.cs">
-      <DependentUpon>FontChooserDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Converters\ConverterBase.cs" />
-    <Compile Include="Media\HsvColor.cs" />
-    <Compile Include="Controls\NumericUpDown.cs" />
-    <Compile Include="Models\HtmlObject.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DragAndDrop\DragAdorner.cs" />
-    <Compile Include="Services\DragAndDrop\DragAndDropService.cs" />
-    <Compile Include="Services\DragAndDrop\InsertionAdorner.cs" />
-    <Compile Include="Services\DragAndDrop\ItemsControlDragDropManager.cs" />
-    <Compile Include="Services\PushBinding\FreezableBinding.cs" />
-    <Compile Include="Services\PushBinding\PushBinding.cs" />
-    <Compile Include="Services\PushBinding\PushBindingCollection.cs" />
-    <Compile Include="Services\PushBinding\PushBindingManager.cs" />
-    <Compile Include="Theming\IThemeManager.cs" />
-    <Compile Include="Theming\ThemeInfo.cs" />
-    <Compile Include="Theming\ThemeLocator.cs" />
+    <Reference Include="MSHTML">
+      <HintPath>.\dlls\MSHTML.dll</HintPath>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Page Include="CommonDialogs\InsertHyperlinkDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CommonDialogs\InsertImageDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CommonDialogs\InsertTableDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ColorComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="CommonDialogs\ColorPickerDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="CommonDialogs\FontChooserDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\HtmlRichEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\BusyIndicator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ColorChip.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\NumericUpDown.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\NumericUpDownTwilight.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Resources\Fonts\GLYPHICONS Halflings.ttf" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="MSHTML">
-      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
-      <VersionMajor>4</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

@@ -15,7 +15,7 @@ using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using TAlex.WPF.Media;
 using TAlex.WPF.CommonDialogs;
-using mshtml;
+using MSHTML;
 
 
 namespace TAlex.WPF.Controls
