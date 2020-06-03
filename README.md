@@ -1,5 +1,5 @@
 # WPF Controls
-[![Build status](https://ci.appveyor.com/api/projects/status/lfao253dbnmpv3pw?svg=true)](https://ci.appveyor.com/project/alex-titarenko/wpfcontrols)
+![Build](https://github.com/alex-titarenko/wpfcontrols/workflows/Build/badge.svg?branch=master)
 [![NuGet Version](http://img.shields.io/nuget/v/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/) [![NuGet Downloads](http://img.shields.io/nuget/dt/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/)
 
 Set of Controls for WPF.
