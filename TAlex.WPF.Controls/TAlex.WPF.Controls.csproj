@@ -8,11 +8,12 @@
     <Title>Controls for WPF</Title>
     <Product>TAlex.WPF.Controls</Product>
     <Description>Collection of controls for WPF</Description>
-    <Version>3.0.1</Version>
+    <Version>3.0.2</Version>
     <Company>Alex Titarenko</Company>
     <Authors>Alex Titarenko</Authors>
     <Copyright>Copyright (c) 2020 Alex Titarenko</Copyright>
     <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/alex-titarenko/wpfcontrols</PackageProjectUrl>
     <PackageTags>Controls;WPF;ColorPicker;NumericUpDown;HtmlRichEditor;Converters</PackageTags>
     <NoWarn>CS1591</NoWarn>
