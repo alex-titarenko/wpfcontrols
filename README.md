@@ -1,5 +1,5 @@
 # WPF Controls
-![Build](https://github.com/alex-titarenko/wpfcontrols/workflows/Build/badge.svg?branch=master)
+![Build](https://github.com/alex-titarenko/wpfcontrols/workflows/Build/badge.svg?branch=main)
 [![NuGet Version](http://img.shields.io/nuget/v/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/) [![NuGet Downloads](http://img.shields.io/nuget/dt/TAlex.WPF.Controls.svg?style=flat)](https://www.nuget.org/packages/TAlex.WPF.Controls/)
 
 Set of Controls for WPF.
