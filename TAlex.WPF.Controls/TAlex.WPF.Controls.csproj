@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net461</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;netcoreapp3.1;net462</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <RootNamespace>TAlex.WPF</RootNamespace>
     <AssemblyName>TAlex.WPF.Controls</AssemblyName>
     <Title>Controls for WPF</Title>
     <Product>TAlex.WPF.Controls</Product>
     <Description>Collection of controls for WPF</Description>
-    <Version>3.0.2</Version>
+    <Version>3.0.3</Version>
     <Company>Alex Titarenko</Company>
     <Authors>Alex Titarenko</Authors>
-    <Copyright>Copyright (c) 2020 Alex Titarenko</Copyright>
+    <Copyright>Copyright (c) 2023 Alex Titarenko</Copyright>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/alex-titarenko/wpfcontrols</PackageProjectUrl>
